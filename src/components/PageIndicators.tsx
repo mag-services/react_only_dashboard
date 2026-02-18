@@ -1,4 +1,4 @@
-import { FileText, TrendingUp, Clock, Scale, FileQuestion, Layers, Users, PieChart } from 'lucide-react'
+import { FileText, TrendingUp, Clock, Scale, FileQuestion, Layers, Users, PieChart, TrendingDown } from 'lucide-react'
 import type { StatRow } from '../types'
 
 function parseVal(v: string): number {
@@ -28,6 +28,25 @@ export function PageIndicators({ data, activeTab }: PageIndicatorsProps) {
   const clearanceRows = data.filter((r) => r.Metric === 'ClearanceRate')
   const avgClearance = clearanceRows.length > 0 ? clearanceRows.reduce((sum, r) => sum + parseVal(r.Value), 0) / clearanceRows.length : 0
   const pending = data.filter((r) => r.Metric === 'Pending').reduce((sum, r) => sum + parseVal(r.Value), 0)
+  const pendingByYear = data
+    .filter((r) => r.Metric === 'Pending')
+    .reduce<Record<string, number>>((acc, r) => {
+      acc[r.Year] = (acc[r.Year] ?? 0) + parseVal(r.Value)
+      return acc
+    }, {})
+  const yearsWithPending = [...new Set(Object.keys(pendingByYear))].sort((a, b) => Number(a) - Number(b))
+  const pendingYoY =
+    yearsWithPending.length >= 2
+      ? (() => {
+          const prevY = yearsWithPending[yearsWithPending.length - 2]
+          const currY = yearsWithPending[yearsWithPending.length - 1]
+          const prevVal = pendingByYear[prevY] ?? 0
+          const currVal = pendingByYear[currY] ?? 0
+          const netChange = currVal - prevVal
+          const pctChange = prevVal > 0 ? (100 * netChange) / prevVal : 0
+          return { netChange, pctChange, prevY, currY }
+        })()
+      : null
   const pdrRows = data.filter((r) => r.Metric === 'PDR')
   const avgPDR = pdrRows.length > 0 ? pdrRows.reduce((sum, r) => sum + parseVal(r.Value), 0) / pdrRows.length : 0
   const pendingAgeRows = data.filter((r) => r.Metric === 'PendingAge')
@@ -63,6 +82,15 @@ export function PageIndicators({ data, activeTab }: PageIndicatorsProps) {
     ],
     1: [
       { label: 'Pending Cases', value: pending.toLocaleString(), icon: Clock, color: '#422AFB' },
+      {
+        label: 'Net Change in Pending (YoY)',
+        value:
+          pendingYoY != null
+            ? `${pendingYoY.netChange >= 0 ? '+' : ''}${pendingYoY.netChange.toLocaleString()} (${pendingYoY.pctChange >= 0 ? '+' : ''}${pendingYoY.pctChange.toFixed(1)}%)`
+            : 'N/A',
+        icon: pendingYoY?.netChange != null && pendingYoY.netChange < 0 ? TrendingDown : TrendingUp,
+        color: pendingYoY?.netChange != null && pendingYoY.netChange < 0 ? '#22c55e' : '#6B7FFF',
+      },
       { label: 'Avg PDR', value: avgPDR.toFixed(2), icon: Scale, color: '#7551ff' },
       { label: 'Avg Pending Age (%)', value: `${avgPendingAge.toFixed(1)}%`, icon: FileText, color: '#6B7FFF' },
       { label: 'Reserved Judgments', value: reserved.toLocaleString(), icon: FileQuestion, color: '#a78bfa' },
