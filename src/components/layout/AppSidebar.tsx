@@ -1,7 +1,6 @@
 import { Link, useLocation } from 'react-router-dom'
 import {
   BarChart2,
-  ChevronDownIcon,
   Users,
   Clock,
   UserCheck,
@@ -13,13 +12,8 @@ import {
   FileStack,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { Button } from '@/components/ui/button'
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/components/ui/popover'
 import { Checkbox } from '@/components/ui/checkbox'
+import { Slider } from '@/components/ui/slider'
 import { Separator } from '@/components/ui/separator'
 
 const ROUTES = [
@@ -45,11 +39,14 @@ interface AppSidebarProps {
 
 export function AppSidebar({ activeTab, onTabChange, years, selectedYears, onYearsChange, courts, selectedCourts, onCourtsChange, open }: AppSidebarProps) {
   const location = useLocation()
-  const toggleYear = (y: number) => {
-    const set = new Set(selectedYears)
-    if (set.has(y)) set.delete(y)
-    else set.add(y)
-    onYearsChange([...set].sort((a, b) => a - b))
+  const rawMin = years.indexOf(selectedYears[0] ?? years[0] ?? 0)
+  const rawMax = years.indexOf(selectedYears[selectedYears.length - 1] ?? years[years.length - 1] ?? 0)
+  const yearMinIdx = years.length > 0 ? Math.max(0, rawMin >= 0 ? rawMin : 0) : 0
+  const yearMaxIdx = years.length > 0 ? Math.min(years.length - 1, rawMax >= 0 ? rawMax : years.length - 1) : 0
+  const sliderValue: [number, number] = [yearMinIdx, Math.max(yearMinIdx, yearMaxIdx)]
+  const onSliderChange = (v: number[]) => {
+    const [lo, hi] = [Math.min(v[0], v[1]), Math.max(v[0], v[1])]
+    onYearsChange(years.slice(lo, hi + 1))
   }
   const toggleCourt = (court: string) => {
     const set = new Set(selectedCourts)
@@ -115,31 +112,30 @@ export function AppSidebar({ activeTab, onTabChange, years, selectedYears, onYea
             ))}
           </div>
           <p className="px-2 pt-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">Years</p>
-          <Popover>
-            <PopoverTrigger asChild>
-              <Button
-                variant="outline"
-                size="sm"
-                className="w-full justify-between gap-2 border-border/60 bg-muted/30 font-medium hover:bg-muted/50"
-              >
-                {selectedYears.length ? selectedYears.sort((a, b) => a - b).join(', ') : 'Select years'}
-                <ChevronDownIcon className="size-4 shrink-0" />
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent className="w-56 p-2" align="start">
-              <div className="flex flex-col gap-0.5">
-                {years.map((y) => (
-                  <label
-                    key={y}
-                    className="flex cursor-pointer items-center gap-2 rounded-lg px-2 py-2 text-sm hover:bg-muted"
-                  >
-                    <Checkbox checked={selectedYears.includes(y)} onCheckedChange={() => toggleYear(y)} />
-                    {y}
-                  </label>
-                ))}
-              </div>
-            </PopoverContent>
-          </Popover>
+          <div className="space-y-2 px-2">
+            <p className="text-sm font-medium">
+              {selectedYears.length ? selectedYears.sort((a, b) => a - b).join(' – ') : 'Select years'}
+            </p>
+            {years.length > 1 && (
+              <>
+                <Slider
+                  min={0}
+                  max={years.length - 1}
+                  step={1}
+                  value={sliderValue}
+                  onValueChange={onSliderChange}
+                  className="w-full"
+                />
+                <div className="flex justify-between text-xs text-muted-foreground">
+                  <span>{years[0]}</span>
+                  <span>{years[years.length - 1]}</span>
+                </div>
+              </>
+            )}
+            {years.length <= 1 && (
+              <p className="text-xs text-muted-foreground">Loading years…</p>
+            )}
+          </div>
         </div>
       </nav>
       <div className="p-4">
