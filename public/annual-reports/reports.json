@@ -1,1 +1,8 @@
-[]
+[
+  { "year": 2018, "title": "Annual Statistics 2018", "file": "2018.pdf" },
+  { "year": 2020, "title": "Annual Statistics 2020", "file": "2020.pdf" },
+  { "year": 2021, "title": "Annual Statistics 2021", "file": "2021.pdf" },
+  { "year": 2022, "title": "Annual Statistics 2022", "file": "2022.pdf" },
+  { "year": 2023, "title": "Annual Statistics 2023", "file": "2023.pdf" },
+  { "year": 2024, "title": "Annual Statistics 2024", "file": "2024.pdf" }
+]
