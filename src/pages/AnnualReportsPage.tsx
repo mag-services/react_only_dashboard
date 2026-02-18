@@ -73,7 +73,7 @@ export function AnnualReportsPage() {
                     className="inline-flex items-center gap-2 rounded-lg bg-[#422AFB] px-4 py-2 text-sm font-medium text-white hover:bg-[#7551ff]"
                   >
                     <FileText className="size-4" />
-                    View PDF
+                    Download PDF
                   </a>
                 </CardContent>
               </Card>
