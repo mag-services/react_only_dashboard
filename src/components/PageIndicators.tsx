@@ -136,7 +136,7 @@ export function PageIndicators({ data, activeTab }: PageIndicatorsProps) {
             <p className="text-sm font-medium text-muted-foreground">{card.label}</p>
             <p className="truncate text-xl font-bold text-foreground">{card.value}</p>
             {card.subtitle && (
-              <p className="mt-0.5 text-xs text-muted-foreground">{card.subtitle}</p>
+              <p className="mt-0.5 text-[10px] leading-tight text-muted-foreground">{card.subtitle}</p>
             )}
           </div>
         </div>
