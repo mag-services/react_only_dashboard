@@ -11,8 +11,8 @@ import { WorkloadPage } from './pages/WorkloadPage'
 import { PerformancePage } from './pages/PerformancePage'
 import { OutcomesPage } from './pages/OutcomesPage'
 import { OtherMetricsPage } from './pages/OtherMetricsPage'
-import { AnnualReportsPage } from './pages/AnnualReportsPage'
 import { GlossaryPage } from './pages/GlossaryPage'
+import { DataSourcesMethodologyPage } from './pages/DataSourcesMethodologyPage'
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { ChevronRight, PanelLeftClose, PanelLeftOpen } from 'lucide-react'
@@ -24,8 +24,8 @@ const SECTION_NAMES = [
   'Performance',
   'Outcomes',
   'Other Metrics',
-  'Annual Reports',
   'Glossary',
+  'Methodology',
 ] as const
 
 export const COURTS = [
@@ -236,8 +236,8 @@ export default function App() {
           )}
           {(activeTab === 6 || activeTab === 7) && (
             <div className="grid gap-6 xl:grid-cols-1">
-              {activeTab === 6 && <AnnualReportsPage embedded />}
-              {activeTab === 7 && <GlossaryPage embedded />}
+              {activeTab === 6 && <GlossaryPage embedded />}
+              {activeTab === 7 && <DataSourcesMethodologyPage embedded />}
             </div>
           )}
         </main>

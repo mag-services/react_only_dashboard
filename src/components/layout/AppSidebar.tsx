@@ -1,15 +1,13 @@
 import {
   BarChart2,
   Users,
-  Clock,
-  UserCheck,
   PieChart,
   FileText,
   TrendingUp,
   Scale,
   Layers,
-  FileStack,
   BookOpen,
+  ClipboardList,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { CourtsFilterDropdown } from '@/components/CourtsFilterDropdown'
@@ -23,8 +21,8 @@ const ROUTES = [
   { name: 'Performance', icon: TrendingUp },
   { name: 'Outcomes', icon: PieChart },
   { name: 'Other Metrics', icon: Users },
-  { name: 'Annual Reports', icon: FileStack },
   { name: 'Glossary', icon: BookOpen },
+  { name: 'Methodology', icon: ClipboardList },
 ] as const
 
 function formatLastUpdated(iso: string | null): string {

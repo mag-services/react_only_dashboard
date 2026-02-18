@@ -13,8 +13,8 @@ const ROUTES = [
   'Performance',
   'Outcomes',
   'Other Metrics',
-  'Annual Reports',
   'Glossary',
+  'Methodology',
 ] as const
 
 function formatLastUpdated(iso: string | null): string {
