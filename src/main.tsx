@@ -1,14 +1,18 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import { ThemeProvider, CssBaseline } from '@mui/material'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import App from './App'
-import { theme } from './theme'
+import { AnnualReportsPage } from './pages/AnnualReportsPage'
+import './highcharts-config'
+import './index.css'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <App />
-    </ThemeProvider>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<App />} />
+        <Route path="/annual-reports" element={<AnnualReportsPage />} />
+      </Routes>
+    </BrowserRouter>
   </React.StrictMode>
 )

@@ -1,14 +1,6 @@
-import { Box, Paper, Typography } from '@mui/material'
-import {
-  ResponsiveContainer,
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-} from 'recharts'
+import Highcharts from 'highcharts'
+import HighchartsReact from 'highcharts-react-official'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import type { StatRow } from '../types'
 
 interface Props {
@@ -17,40 +9,39 @@ interface Props {
   getValue: (court: string, metric: string, year?: number) => number | null
 }
 
+const COLORS = ['#422AFB', '#7551ff', '#6B7FFF', '#4318FF']
+
 export function ClearanceRateChart({ data, selectedYears, getValue }: Props) {
   const courts = [...new Set(data.filter((r) => r.Metric === 'ClearanceRate').map((r) => r.Court))]
   const sortedYears = [...selectedYears].sort((a, b) => a - b)
 
-  const chartData = sortedYears.map((year) => {
-    const point: Record<string, string | number> = { year }
-    courts.forEach((court) => {
-      const v = getValue(court, 'ClearanceRate', year)
-      point[court] = v ?? 0
-    })
-    return point
-  })
+  const series = courts.map((court, i) => ({
+    name: court,
+    type: 'line' as const,
+    data: sortedYears.map((year) => getValue(court, 'ClearanceRate', year) ?? 0),
+    color: COLORS[i % COLORS.length],
+  }))
 
-  const colors = ['#0d47a1', '#006064', '#1565c0', '#00838f']
+  const options: Highcharts.Options = {
+    chart: { type: 'line', height: 400 },
+    xAxis: { categories: sortedYears.map(String), crosshair: true },
+    yAxis: { min: 0, max: 110, title: { text: '%' }, gridLineDashStyle: 'Dot' },
+    series,
+    legend: { enabled: true },
+    tooltip: { shared: true, valueSuffix: '%' },
+    credits: { enabled: false },
+  }
 
   return (
-    <Paper sx={{ p: 2 }}>
-      <Typography variant="h6" gutterBottom>
-        Clearance Rates by Court (%)
-      </Typography>
-      <Box sx={{ height: 400 }}>
-        <ResponsiveContainer width="100%" height="100%">
-          <LineChart data={chartData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="year" />
-            <YAxis domain={[0, 110]} />
-            <Tooltip />
-            <Legend />
-            {courts.map((court, i) => (
-              <Line key={court} type="monotone" dataKey={court} stroke={colors[i % colors.length]} strokeWidth={2} />
-            ))}
-          </LineChart>
-        </ResponsiveContainer>
-      </Box>
-    </Paper>
+    <Card>
+      <CardHeader>
+        <CardTitle>Clearance Rates by Court (%)</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="h-[400px]">
+          <HighchartsReact highcharts={Highcharts} options={options} />
+        </div>
+      </CardContent>
+    </Card>
   )
 }

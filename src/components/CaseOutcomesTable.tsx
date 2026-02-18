@@ -1,14 +1,17 @@
-import { Box, Paper, Typography } from '@mui/material'
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-} from '@mui/material'
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts'
+import { useMemo } from 'react'
+import type { ColumnDef } from '@tanstack/react-table'
+import Highcharts from 'highcharts'
+import HighchartsReact from 'highcharts-react-official'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { DataTable } from '@/components/DataTable'
 import type { StatRow } from '../types'
+
+interface OutcomeRow {
+  court: string
+  year: string
+  metric: string
+  value: string | number
+}
 
 interface Props {
   getRowsByMetric: (metric: string) => (StatRow & { valueNum: number | null })[]
@@ -16,21 +19,16 @@ interface Props {
 }
 
 const OUTCOME_METRICS = [
-  'Criminal_Guilty',
-  'Criminal_NotGuilty',
-  'Criminal_Withdrawn',
-  'Criminal_Dismissed',
-  'Civil_Guilty',
-  'Civil_NotGuilty',
-  'Civil_Withdrawn',
-  'Civil_Committed',
-  'Civil_Dismissed',
-  'PI_Guilty',
-  'PI_NotGuilty',
-  'PI_Withdrawn',
-  'PI_Committed',
-  'PI_Dismissed',
+  'Criminal_Guilty', 'Criminal_NotGuilty', 'Criminal_Withdrawn', 'Criminal_Dismissed',
+  'Civil_Guilty', 'Civil_NotGuilty', 'Civil_Withdrawn', 'Civil_Committed', 'Civil_Dismissed',
+  'PI_Guilty', 'PI_NotGuilty', 'PI_Withdrawn', 'PI_Committed', 'PI_Dismissed',
 ] as const
+
+const BAR_COLORS: Record<string, string> = {
+  Criminal_Guilty: '#422AFB', Criminal_NotGuilty: '#7551ff', Criminal_Withdrawn: '#6B7FFF', Criminal_Dismissed: '#4318FF',
+  Civil_Guilty: '#a78bfa', Civil_NotGuilty: '#93c5fd', Civil_Withdrawn: '#c4b5fd', Civil_Committed: '#bfdbfe', Civil_Dismissed: '#e0e7ff',
+  PI_Guilty: '#818cf8', PI_NotGuilty: '#60a5fa', PI_Withdrawn: '#38bdf8', PI_Committed: '#22d3ee', PI_Dismissed: '#a5f3fc',
+}
 
 export function CaseOutcomesTable({ getRowsByMetric, selectedYears }: Props) {
   const outcomeRows = OUTCOME_METRICS.flatMap((m) => getRowsByMetric(m))
@@ -38,8 +36,7 @@ export function CaseOutcomesTable({ getRowsByMetric, selectedYears }: Props) {
 
   const byCourtYearMetric = outcomeRows.reduce(
     (acc, row) => {
-      const key = `${row.Court}|${row.Year}|${row.Metric}`
-      acc[key] = row
+      acc[`${row.Court}|${row.Year}|${row.Metric}`] = row
       return acc
     },
     {} as Record<string, (StatRow & { valueNum: number | null })>
@@ -54,84 +51,78 @@ export function CaseOutcomesTable({ getRowsByMetric, selectedYears }: Props) {
       })
       if (metrics.length === 0) return []
       const point: Record<string, string | number> = { court, year, name: `${court} ${year}` }
-      metrics.forEach((m) => {
-        point[m] = byCourtYearMetric[`${court}|${year}|${m}`]?.valueNum ?? 0
-      })
+      metrics.forEach((m) => { point[m] = byCourtYearMetric[`${court}|${year}|${m}`]?.valueNum ?? 0 })
       return [point]
     })
   )
 
   const barKeys = [...new Set(chartData.flatMap((d) => Object.keys(d).filter((k) => !['court', 'year', 'name'].includes(k))))]
-  const barColors: Record<string, string> = {
-    Criminal_Guilty: '#0d47a1',
-    Criminal_NotGuilty: '#006064',
-    Criminal_Withdrawn: '#1565c0',
-    Criminal_Dismissed: '#00838f',
-    Civil_Guilty: '#4dd0e1',
-    Civil_NotGuilty: '#81d4fa',
-    Civil_Withdrawn: '#b2ebf2',
-    Civil_Committed: '#b2dfdb',
-    Civil_Dismissed: '#e0f2f1',
-    PI_Guilty: '#00695c',
-    PI_NotGuilty: '#26a69a',
-    PI_Withdrawn: '#80cbc4',
-    PI_Committed: '#4db6ac',
-    PI_Dismissed: '#b2dfdb',
-  }
 
-  const tableRows = outcomeRows.map((r) => ({
-    court: r.Court,
-    year: r.Year,
-    metric: r.Metric,
-    value: r.valueNum ?? 'N/A',
+  const tableRows = useMemo(
+    () =>
+      outcomeRows.map((r) => ({
+        court: r.Court,
+        year: r.Year,
+        metric: r.Metric,
+        value: r.valueNum ?? 'N/A',
+      })),
+    [outcomeRows]
+  )
+
+  const columns = useMemo<ColumnDef<OutcomeRow>[]>(
+    () => [
+      { accessorKey: 'court', header: 'Court' },
+      { accessorKey: 'year', header: 'Year', meta: { className: 'text-right' }, cell: ({ getValue }) => <span className="block text-right">{getValue()}</span> },
+      { accessorKey: 'metric', header: 'Metric' },
+      { accessorKey: 'value', header: 'Value (%)', meta: { className: 'text-right' }, cell: ({ getValue }) => <span className="block text-right">{getValue()}</span> },
+    ],
+    []
+  )
+
+  const series = barKeys.map((k) => ({
+    name: k.replace('_', ' '),
+    data: chartData.map((r) => (r[k] as number) ?? 0),
+    type: 'column' as const,
+    color: BAR_COLORS[k] ?? '#78909c',
+    stack: 'outcomes',
   }))
 
+  const options: Highcharts.Options = {
+    chart: { type: 'column', height: 350 },
+    xAxis: {
+      categories: chartData.map((r) => r.name),
+      labels: { rotation: -45, style: { fontSize: '10px' } },
+      crosshair: true,
+    },
+    yAxis: { title: { text: '%' }, gridLineDashStyle: 'Dot' },
+    plotOptions: { column: { borderWidth: 0, stacking: 'normal' } },
+    series,
+    legend: { enabled: true },
+    tooltip: { shared: true, valueSuffix: '%' },
+    credits: { enabled: false },
+  }
+
   return (
-    <Paper sx={{ p: 2 }}>
-      <Typography variant="h6" gutterBottom>
-        Case Outcomes (Guilty, NotGuilty, Withdrawn, Committed, Dismissed)
-      </Typography>
-      <TableContainer sx={{ maxHeight: 300 }}>
-        <Table size="small" stickyHeader>
-          <TableHead>
-            <TableRow>
-              <TableCell>Court</TableCell>
-              <TableCell align="right">Year</TableCell>
-              <TableCell>Metric</TableCell>
-              <TableCell align="right">Value (%)</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {tableRows.map((row, i) => (
-              <TableRow key={`${row.court}-${row.year}-${row.metric}-${i}`}>
-                <TableCell>{row.court}</TableCell>
-                <TableCell align="right">{row.year}</TableCell>
-                <TableCell>{row.metric}</TableCell>
-                <TableCell align="right">{row.value}</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      {chartData.length > 0 && barKeys.length > 0 && (
-        <Box sx={{ height: 350, mt: 2 }}>
-          <Typography variant="subtitle2" gutterBottom>
-            Case Outcomes by Court and Year (%)
-          </Typography>
-          <ResponsiveContainer width="100%" height="100%">
-            <BarChart data={chartData} margin={{ top: 20, right: 30, left: 20, bottom: 80 }}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="name" angle={-45} textAnchor="end" height={80} tick={{ fontSize: 10 }} />
-              <YAxis />
-              <Tooltip />
-              <Legend />
-              {barKeys.map((k) => (
-                <Bar key={k} dataKey={k} fill={barColors[k] ?? '#78909c'} name={k.replace('_', ' ')} stackId="a" />
-              ))}
-            </BarChart>
-          </ResponsiveContainer>
-        </Box>
-      )}
-    </Paper>
+    <Card>
+      <CardHeader>
+        <CardTitle>Case Outcomes (Guilty, NotGuilty, Withdrawn, Committed, Dismissed)</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <DataTable
+          data={tableRows}
+          columns={columns}
+          pageSize={5}
+          getRowId={(row) => `${row.court}-${row.year}-${row.metric}`}
+        />
+        {chartData.length > 0 && barKeys.length > 0 && (
+          <div className="mt-4">
+            <p className="mb-2 text-sm font-medium text-muted-foreground">Case Outcomes by Court and Year (%)</p>
+            <div className="h-[350px]">
+              <HighchartsReact highcharts={Highcharts} options={options} />
+            </div>
+          </div>
+        )}
+      </CardContent>
+    </Card>
   )
 }

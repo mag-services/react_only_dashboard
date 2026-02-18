@@ -1,39 +1,41 @@
 import { useCallback, useEffect, useState } from 'react'
-import {
-  AppBar,
-  Box,
-  Container,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-  SelectChangeEvent,
-  Tab,
-  Tabs,
-  Toolbar,
-  Typography,
-  CircularProgress,
-  Alert,
-} from '@mui/material'
 import Papa from 'papaparse'
 import type { StatRow } from './types'
-import { ClearanceRateChart } from './components/ClearanceRateChart'
-import { FilingsDisposalsChart } from './components/FilingsDisposalsChart'
-import { PendingCasesTable } from './components/PendingCasesTable'
-import { TimelinessChart } from './components/TimelinessChart'
-import { AttendanceChart } from './components/AttendanceChart'
-import { GenderBreakdownChart } from './components/GenderBreakdownChart'
-import { CaseOutcomesTable } from './components/CaseOutcomesTable'
-import { ProductivityChart } from './components/ProductivityChart'
+import { AppSidebar } from './components/layout/AppSidebar'
+import { AppSidebarSheet } from './components/layout/AppSidebarSheet'
+import { PageIndicators } from './components/PageIndicators'
+import { OverviewPage } from './pages/OverviewPage'
+import { PendingCasesPage } from './pages/PendingCasesPage'
+import { WorkloadPage } from './pages/WorkloadPage'
+import { PerformancePage } from './pages/PerformancePage'
+import { OutcomesPage } from './pages/OutcomesPage'
+import { OtherMetricsPage } from './pages/OtherMetricsPage'
+import { Card, CardContent } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
+import { ChevronRight, PanelLeftClose, PanelLeftOpen } from 'lucide-react'
 
-/** Parse numeric value; returns null for NA / empty */
+const SECTION_NAMES = [
+  'Overview',
+  'Pending Cases',
+  'Workload',
+  'Performance',
+  'Outcomes',
+  'Other Metrics',
+] as const
+
+export const COURTS = [
+  'Court of Appeal',
+  'Supreme Court',
+  'Magistrates Court',
+  'Island Court',
+] as const
+
 function parseValue(val: string): number | null {
   if (val == null || val === '' || String(val).toLowerCase() === 'na') return null
   const n = parseFloat(String(val))
   return Number.isNaN(n) ? null : n
 }
 
-/** Load CSV for a year via fetch */
 async function loadYearData(year: number): Promise<StatRow[]> {
   const res = await fetch(`/data/${year}.csv`)
   if (!res.ok) throw new Error(`Failed to load ${year}.csv`)
@@ -48,7 +50,6 @@ async function loadYearData(year: number): Promise<StatRow[]> {
   }))
 }
 
-/** Load available years from manifest */
 async function loadAvailableYears(): Promise<number[]> {
   const res = await fetch('/data/years.json')
   if (!res.ok) return [2018, 2020, 2021, 2022, 2023, 2024]
@@ -59,9 +60,14 @@ async function loadAvailableYears(): Promise<number[]> {
 export default function App() {
   const [years, setYears] = useState<number[]>([])
   const [selectedYears, setSelectedYears] = useState<number[]>([])
+  const [selectedCourts, setSelectedCourts] = useState<string[]>(() => [...COURTS])
   const [data, setData] = useState<StatRow[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [activeTab, setActiveTab] = useState(0)
+  const [sidebarOpen, setSidebarOpen] = useState(true)
+
+  const filteredData = data.filter((r) => selectedCourts.includes(r.Court))
 
   const loadYears = useCallback(async () => {
     try {
@@ -75,7 +81,7 @@ export default function App() {
 
   useEffect(() => {
     loadYears()
-  }, [])
+  }, [loadYears])
 
   useEffect(() => {
     if (selectedYears.length === 0) {
@@ -102,116 +108,122 @@ export default function App() {
     }
   }, [selectedYears])
 
-  const handleYearsChange = (e: SelectChangeEvent<number[]>) => {
-    const v = e.target.value
-    setSelectedYears(Array.isArray(v) ? v : [v])
-  }
-
   const getValue = useCallback((court: string, metric: string, year?: number): number | null => {
-    const row = data.find((r) => r.Court === court && r.Metric === metric && (year == null || r.Year === String(year)))
+    const row = filteredData.find((r) => r.Court === court && r.Metric === metric && (year == null || r.Year === String(year)))
     return row ? parseValue(row.Value) : null
-  }, [data])
+  }, [filteredData])
 
   const getRowsByMetric = useCallback(
     (metric: string) =>
-      data.filter((r) => r.Metric === metric).map((r) => ({ ...r, valueNum: parseValue(r.Value) })),
-    [data]
+      filteredData.filter((r) => r.Metric === metric).map((r) => ({ ...r, valueNum: parseValue(r.Value) })),
+    [filteredData]
   )
 
   return (
-    <Box sx={{ minHeight: '100vh', bgcolor: 'background.default' }}>
-      <AppBar position="static" sx={{ bgcolor: 'primary.dark' }}>
-        <Toolbar>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            Vanuatu Courts Dashboard
-          </Typography>
-          <FormControl size="small" sx={{ minWidth: 200 }} variant="outlined">
-            <InputLabel>Years</InputLabel>
-            <Select
-              multiple
-              value={selectedYears}
-              onChange={handleYearsChange}
-              label="Years"
-              renderValue={(v) => (v as number[]).sort((a, b) => a - b).join(', ')}
-            >
-              {years.map((y) => (
-                <MenuItem key={y} value={y}>
-                  {y}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        </Toolbar>
-      </AppBar>
+    <div className="flex min-h-screen bg-background">
+      <AppSidebar
+        activeTab={activeTab}
+        onTabChange={setActiveTab}
+        years={years}
+        selectedYears={selectedYears}
+        onYearsChange={setSelectedYears}
+        courts={COURTS}
+        selectedCourts={selectedCourts}
+        onCourtsChange={setSelectedCourts}
+        open={sidebarOpen}
+      />
 
-      <Container maxWidth="xl" sx={{ py: 3 }}>
-        {error && (
-          <Alert severity="error" sx={{ mb: 2 }}>
-            {error}
-          </Alert>
-        )}
+      <div
+        className={`flex flex-1 flex-col transition-[padding] duration-200 ${sidebarOpen ? 'lg:pl-[260px]' : 'lg:pl-0'}`}
+      >
+        <main className="flex-1 p-4 lg:p-6">
+          <div className="mb-6 flex items-center gap-3">
+            <div className="flex shrink-0 items-center gap-2">
+              <div className="lg:hidden">
+                <AppSidebarSheet
+                activeTab={activeTab}
+                onTabChange={setActiveTab}
+                years={years}
+                selectedYears={selectedYears}
+                onYearsChange={setSelectedYears}
+                courts={COURTS}
+                selectedCourts={selectedCourts}
+                onCourtsChange={setSelectedCourts}
+                />
+              </div>
+              <Button
+                variant="outline"
+                size="icon"
+                className="hidden border-border/60 bg-white shadow-sm hover:bg-muted/50 lg:flex"
+                onClick={() => setSidebarOpen((v) => !v)}
+                title={sidebarOpen ? 'Collapse sidebar' : 'Expand sidebar'}
+              >
+                {sidebarOpen ? <PanelLeftClose className="size-5" /> : <PanelLeftOpen className="size-5" />}
+              </Button>
+            </div>
+            <div>
+              <div className="flex items-center gap-1 text-sm text-muted-foreground">
+                <span>Pages</span>
+                <ChevronRight className="size-4" />
+                <span>{SECTION_NAMES[activeTab]}</span>
+              </div>
+              <h1 className="text-2xl font-bold text-foreground">{SECTION_NAMES[activeTab]}</h1>
+            </div>
+          </div>
 
-        {loading && (
-          <Box display="flex" justifyContent="center" py={6}>
-            <CircularProgress />
-          </Box>
-        )}
+          {error && (
+            <Card className="mb-6 border-red-200 bg-red-50 shadow-sm">
+              <CardContent className="pt-6">
+                <p className="text-red-700">{error}</p>
+              </CardContent>
+            </Card>
+          )}
 
-        {!loading && selectedYears.length === 0 && (
-          <Alert severity="info">Select at least one year to view data.</Alert>
-        )}
+          {loading && (
+            <div className="flex justify-center py-16">
+              <div className="size-10 animate-spin rounded-full border-2 border-[#7551ff] border-t-transparent" />
+            </div>
+          )}
 
-        {!loading && selectedYears.length > 0 && data.length === 0 && (
-          <Alert severity="warning">No data available for the selected years.</Alert>
-        )}
+          {!loading && selectedYears.length === 0 && (
+            <Card className="shadow-sm">
+              <CardContent className="pt-6">
+                <p className="text-muted-foreground">Select at least one year to view data.</p>
+              </CardContent>
+            </Card>
+          )}
 
-        {!loading && data.length > 0 && (
-          <DashboardTabs
-            data={data}
-            selectedYears={selectedYears}
-            getValue={getValue}
-            getRowsByMetric={getRowsByMetric}
-          />
-        )}
-      </Container>
-    </Box>
-  )
-}
+          {!loading && selectedYears.length > 0 && selectedCourts.length === 0 && (
+            <Card className="shadow-sm">
+              <CardContent className="pt-6">
+                <p className="text-muted-foreground">Select at least one court to view data.</p>
+              </CardContent>
+            </Card>
+          )}
 
-function DashboardTabs({
-  data,
-  selectedYears,
-  getValue,
-  getRowsByMetric,
-}: {
-  data: StatRow[]
-  selectedYears: number[]
-  getValue: (court: string, metric: string, year?: number) => number | null
-  getRowsByMetric: (metric: string) => (StatRow & { valueNum: number | null })[]
-}) {
-  const [tab, setTab] = useState(0)
+          {!loading && selectedYears.length > 0 && selectedCourts.length > 0 && filteredData.length === 0 && (
+            <Card className="shadow-sm">
+              <CardContent className="pt-6">
+                <p className="text-muted-foreground">No data available for the selected filters.</p>
+              </CardContent>
+            </Card>
+          )}
 
-  return (
-    <Box>
-      <Tabs value={tab} onChange={(_, v) => setTab(v)} sx={{ borderBottom: 1, borderColor: 'divider', mb: 2 }}>
-        <Tab label="Clearance Rates" />
-        <Tab label="Filings & Disposals" />
-        <Tab label="Pending & PDR" />
-        <Tab label="Timeliness" />
-        <Tab label="Attendance" />
-        <Tab label="Gender" />
-        <Tab label="Case Outcomes" />
-        <Tab label="Productivity" />
-      </Tabs>
-
-      {tab === 0 && <ClearanceRateChart data={data} selectedYears={selectedYears} getValue={getValue} />}
-      {tab === 1 && <FilingsDisposalsChart data={data} selectedYears={selectedYears} getValue={getValue} />}
-      {tab === 2 && <PendingCasesTable getRowsByMetric={getRowsByMetric} selectedYears={selectedYears} />}
-      {tab === 3 && <TimelinessChart data={data} selectedYears={selectedYears} getValue={getValue} />}
-      {tab === 4 && <AttendanceChart data={data} selectedYears={selectedYears} getValue={getValue} />}
-      {tab === 5 && <GenderBreakdownChart data={data} selectedYears={selectedYears} getValue={getValue} />}
-      {tab === 6 && <CaseOutcomesTable getRowsByMetric={getRowsByMetric} selectedYears={selectedYears} />}
-      {tab === 7 && <ProductivityChart data={data} selectedYears={selectedYears} getValue={getValue} />}
-    </Box>
+          {!loading && data.length > 0 && (
+            <>
+              <PageIndicators data={filteredData} activeTab={activeTab} />
+              <div className="grid gap-6 xl:grid-cols-1">
+                {activeTab === 0 && <OverviewPage data={filteredData} selectedYears={selectedYears} getValue={getValue} />}
+                {activeTab === 1 && <PendingCasesPage data={filteredData} selectedYears={selectedYears} getValue={getValue} getRowsByMetric={getRowsByMetric} />}
+                {activeTab === 2 && <WorkloadPage data={filteredData} selectedYears={selectedYears} getValue={getValue} />}
+                {activeTab === 3 && <PerformancePage data={filteredData} selectedYears={selectedYears} getValue={getValue} />}
+                {activeTab === 4 && <OutcomesPage data={filteredData} selectedYears={selectedYears} getValue={getValue} getRowsByMetric={getRowsByMetric} />}
+                {activeTab === 5 && <OtherMetricsPage data={filteredData} selectedYears={selectedYears} getValue={getValue} />}
+              </div>
+            </>
+          )}
+        </main>
+      </div>
+    </div>
   )
 }

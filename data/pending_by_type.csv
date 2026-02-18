@@ -1,0 +1,73 @@
+Court,Year,CaseType,Pending,PctOfTotal
+Supreme Court,2024,Civil,550,55
+Supreme Court,2024,Criminal,350,35
+Supreme Court,2024,Other,100,10
+Supreme Court,2023,Civil,530,56
+Supreme Court,2023,Criminal,340,36
+Supreme Court,2023,Other,80,8
+Supreme Court,2022,Civil,510,55
+Supreme Court,2022,Criminal,330,36
+Supreme Court,2022,Other,80,9
+Supreme Court,2021,Civil,490,54
+Supreme Court,2021,Criminal,320,36
+Supreme Court,2021,Other,90,10
+Supreme Court,2020,Civil,480,55
+Supreme Court,2020,Criminal,310,35
+Supreme Court,2020,Other,90,10
+Supreme Court,2018,Civil,470,55
+Supreme Court,2018,Criminal,300,35
+Supreme Court,2018,Other,90,10
+Magistrates Court,2024,Criminal,488,35
+Magistrates Court,2024,Violence,418,30
+Magistrates Court,2024,PI,279,20
+Magistrates Court,2024,Other,209,15
+Magistrates Court,2023,Criminal,475,35
+Magistrates Court,2023,Violence,407,30
+Magistrates Court,2023,PI,271,20
+Magistrates Court,2023,Other,204,15
+Magistrates Court,2022,Criminal,455,35
+Magistrates Court,2022,Violence,390,30
+Magistrates Court,2022,PI,260,20
+Magistrates Court,2022,Other,195,15
+Magistrates Court,2021,Criminal,438,35
+Magistrates Court,2021,Violence,375,30
+Magistrates Court,2021,PI,250,20
+Magistrates Court,2021,Other,187,15
+Magistrates Court,2020,Criminal,420,35
+Magistrates Court,2020,Violence,360,30
+Magistrates Court,2020,PI,240,20
+Magistrates Court,2020,Other,180,15
+Magistrates Court,2018,Criminal,403,35
+Magistrates Court,2018,Violence,345,30
+Magistrates Court,2018,PI,230,20
+Magistrates Court,2018,Other,172,15
+Island Court,2024,Criminal,250,36
+Island Court,2024,Maintenance,250,36
+Island Court,2024,Other,195,28
+Island Court,2023,Criminal,235,36
+Island Court,2023,Maintenance,235,36
+Island Court,2023,Other,182,28
+Island Court,2022,Criminal,227,36
+Island Court,2022,Maintenance,227,36
+Island Court,2022,Other,176,28
+Island Court,2021,Criminal,219,36
+Island Court,2021,Maintenance,219,36
+Island Court,2021,Other,172,28
+Island Court,2020,Criminal,212,36
+Island Court,2020,Maintenance,212,36
+Island Court,2020,Other,166,28
+Island Court,2018,Criminal,199,35
+Island Court,2018,Maintenance,199,35
+Island Court,2018,Other,172,30
+Court of Appeal,2024,Civil,12,50
+Court of Appeal,2024,Criminal,12,50
+Court of Appeal,2023,Civil,13,52
+Court of Appeal,2023,Criminal,12,48
+Court of Appeal,2022,Civil,13,50
+Court of Appeal,2022,Criminal,13,50
+Court of Appeal,2021,Civil,12,48
+Court of Appeal,2021,Criminal,13,52
+Court of Appeal,2020,Civil,13,48
+Court of Appeal,2020,Criminal,14,52
+Court of Appeal,2018,Civil,14,50
+Court of Appeal,2018,Criminal,14,50

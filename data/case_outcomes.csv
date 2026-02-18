@@ -1,4 +1,4 @@
-Court,Year,CaseType,Guilty,NotGuilty,Withdrawn,Committed,Dismissed
+﻿Court,Year,CaseType,Guilty,NotGuilty,Withdrawn,Committed,Dismissed
 Court of Appeal,2024,Civil,30,0,10,0,60
 Court of Appeal,2023,Civil,28,0,12,0,60
 Court of Appeal,2022,Civil,29,0,11,0,60

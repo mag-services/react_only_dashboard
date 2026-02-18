@@ -1,0 +1,73 @@
+Court,Year,CaseType,Filings,Disposals,ClearanceRate
+Supreme Court,2024,Total,879,821,93
+Supreme Court,2024,Criminal,237,240,101
+Supreme Court,2023,Total,850,830,98
+Supreme Court,2023,Criminal,246,243,99
+Supreme Court,2022,Total,820,810,99
+Supreme Court,2022,Criminal,250,248,99
+Supreme Court,2021,Total,800,790,99
+Supreme Court,2021,Criminal,255,252,99
+Supreme Court,2020,Total,780,770,99
+Supreme Court,2020,Criminal,260,257,99
+Supreme Court,2018,Total,760,750,99
+Supreme Court,2018,Criminal,265,262,99
+Magistrates Court,2024,Total,2383,2105,88
+Magistrates Court,2024,Criminal,800,760,95
+Magistrates Court,2024,PI,350,385,110
+Magistrates Court,2024,Violence,1228,1250,102
+Magistrates Court,2023,Total,2227,2039,92
+Magistrates Court,2023,Criminal,850,800,94
+Magistrates Court,2023,PI,340,250,74
+Magistrates Court,2023,Violence,1038,1050,101
+Magistrates Court,2022,Total,2100,1950,93
+Magistrates Court,2022,Criminal,820,780,95
+Magistrates Court,2022,PI,330,300,91
+Magistrates Court,2022,Violence,950,960,101
+Magistrates Court,2021,Total,2000,1900,95
+Magistrates Court,2021,Criminal,800,760,95
+Magistrates Court,2021,PI,320,310,97
+Magistrates Court,2021,Violence,880,830,94
+Magistrates Court,2020,Total,1900,1850,97
+Magistrates Court,2020,Criminal,780,750,96
+Magistrates Court,2020,PI,310,300,97
+Magistrates Court,2020,Violence,810,820,101
+Magistrates Court,2018,Total,1800,1800,100
+Magistrates Court,2018,Criminal,750,745,99
+Magistrates Court,2018,PI,300,294,98
+Magistrates Court,2018,Violence,750,761,101
+Island Court,2024,Total,388,390,101
+Island Court,2024,Criminal,180,200,111
+Island Court,2024,Maintenance,208,270,130
+Island Court,2023,Total,407,420,103
+Island Court,2023,Criminal,200,175,88
+Island Court,2023,Maintenance,207,180,87
+Island Court,2022,Total,420,430,102
+Island Court,2022,Criminal,210,200,95
+Island Court,2022,Maintenance,210,220,105
+Island Court,2021,Total,430,440,102
+Island Court,2021,Criminal,215,210,98
+Island Court,2021,Maintenance,215,235,109
+Island Court,2020,Total,440,450,102
+Island Court,2020,Criminal,220,215,98
+Island Court,2020,Maintenance,220,235,107
+Island Court,2018,Total,450,460,102
+Island Court,2018,Criminal,225,220,98
+Island Court,2018,Maintenance,225,240,107
+Court of Appeal,2024,Total,80,82,102
+Court of Appeal,2024,Civil,45,48,107
+Court of Appeal,2024,Criminal,35,34,97
+Court of Appeal,2023,Total,78,76,97
+Court of Appeal,2023,Civil,44,42,95
+Court of Appeal,2023,Criminal,34,34,100
+Court of Appeal,2022,Total,75,74,99
+Court of Appeal,2022,Civil,42,41,98
+Court of Appeal,2022,Criminal,33,33,100
+Court of Appeal,2021,Total,77,75,97
+Court of Appeal,2021,Civil,43,41,95
+Court of Appeal,2021,Criminal,34,34,100
+Court of Appeal,2020,Total,76,73,96
+Court of Appeal,2020,Civil,42,40,95
+Court of Appeal,2020,Criminal,34,33,97
+Court of Appeal,2018,Total,74,72,97
+Court of Appeal,2018,Civil,41,39,95
+Court of Appeal,2018,Criminal,33,33,100

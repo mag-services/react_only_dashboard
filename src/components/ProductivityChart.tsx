@@ -1,13 +1,6 @@
-import { Box, Paper, Typography } from '@mui/material'
-import {
-  ResponsiveContainer,
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-} from 'recharts'
+import Highcharts from 'highcharts'
+import HighchartsReact from 'highcharts-react-official'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import type { StatRow } from '../types'
 
 interface Props {
@@ -20,7 +13,7 @@ export function ProductivityChart({ data, selectedYears, getValue }: Props) {
   const courts = [...new Set(data.filter((r) => r.Metric === 'Productivity').map((r) => r.Court))]
   const sortedYears = [...selectedYears].sort((a, b) => a - b)
 
-  const series = courts.flatMap((court) =>
+  const seriesData = courts.flatMap((court) =>
     sortedYears.flatMap((year) => {
       const v = getValue(court, 'Productivity', year)
       if (v == null) return []
@@ -28,33 +21,45 @@ export function ProductivityChart({ data, selectedYears, getValue }: Props) {
     })
   )
 
-  if (series.length === 0) {
+  if (seriesData.length === 0) {
     return (
-      <Paper sx={{ p: 2 }}>
-        <Typography variant="h6" gutterBottom>
-          Productivity (cases per judge/magistrate)
-        </Typography>
-        <Typography color="text.secondary">No productivity data available for selected years.</Typography>
-      </Paper>
+      <Card>
+        <CardHeader>
+          <CardTitle>Productivity (cases per judge/magistrate)</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p className="text-muted-foreground">No productivity data available for selected years.</p>
+        </CardContent>
+      </Card>
     )
   }
 
+  const categories = seriesData.map((r) => r.name)
+  const options: Highcharts.Options = {
+    chart: { type: 'column', height: 400 },
+    xAxis: {
+      categories,
+      labels: { rotation: -45, style: { fontSize: '10px' } },
+      crosshair: true,
+    },
+    yAxis: { title: { text: 'Cases per judge' }, gridLineDashStyle: 'Dot' },
+    plotOptions: { column: { borderWidth: 0 } },
+    series: [{ name: 'Cases per judge', data: seriesData.map((r) => r.Productivity), type: 'column', color: '#422AFB' }],
+    legend: { enabled: false },
+    tooltip: { shared: false },
+    credits: { enabled: false },
+  }
+
   return (
-    <Paper sx={{ p: 2 }}>
-      <Typography variant="h6" gutterBottom>
-        Productivity (cases per judge/magistrate)
-      </Typography>
-      <Box sx={{ height: 400 }}>
-        <ResponsiveContainer width="100%" height="100%">
-          <BarChart data={series} margin={{ top: 20, right: 30, left: 20, bottom: 80 }}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="name" angle={-45} textAnchor="end" height={80} tick={{ fontSize: 10 }} />
-            <YAxis />
-            <Tooltip />
-            <Bar dataKey="Productivity" fill="#0d47a1" name="Cases per judge" />
-          </BarChart>
-        </ResponsiveContainer>
-      </Box>
-    </Paper>
+    <Card>
+      <CardHeader>
+        <CardTitle>Productivity (cases per judge/magistrate)</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="h-[400px]">
+          <HighchartsReact highcharts={Highcharts} options={options} />
+        </div>
+      </CardContent>
+    </Card>
   )
 }

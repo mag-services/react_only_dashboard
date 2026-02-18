@@ -1,14 +1,6 @@
-import { Box, Paper, Typography } from '@mui/material'
-import {
-  ResponsiveContainer,
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-} from 'recharts'
+import Highcharts from 'highcharts'
+import HighchartsReact from 'highcharts-react-official'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import type { StatRow } from '../types'
 
 interface Props {
@@ -21,40 +13,45 @@ export function GenderBreakdownChart({ data, selectedYears, getValue }: Props) {
   const courts = [...new Set(data.filter((r) => r.Metric === 'Gender_Male').map((r) => r.Court))]
   const sortedYears = [...selectedYears].sort((a, b) => a - b)
 
-  const series = courts.flatMap((court) =>
-    sortedYears.map((year) => {
-      const male = getValue(court, 'Gender_Male', year)
-      const female = getValue(court, 'Gender_Female', year)
-      return {
-        court,
-        year,
-        name: `${court} ${year}`,
-        Male: male ?? 0,
-        Female: female ?? 0,
-      }
-    })
+  const seriesData = courts.flatMap((court) =>
+    sortedYears.map((year) => ({
+      court, year, name: `${court} ${year}`,
+      Male: getValue(court, 'Gender_Male', year) ?? 0,
+      Female: getValue(court, 'Gender_Female', year) ?? 0,
+    }))
   )
+  const categories = seriesData.map((r) => r.name)
 
-  const colors = { Male: '#0d47a1', Female: '#006064' }
+  const series = [
+    { name: 'Male %', data: seriesData.map((r) => r.Male), type: 'column' as const, color: '#422AFB', stack: 'gender' },
+    { name: 'Female %', data: seriesData.map((r) => r.Female), type: 'column' as const, color: '#7551ff', stack: 'gender' },
+  ]
+
+  const options: Highcharts.Options = {
+    chart: { type: 'column', height: 400 },
+    xAxis: {
+      categories,
+      labels: { rotation: -45, style: { fontSize: '10px' } },
+      crosshair: true,
+    },
+    yAxis: { min: 0, max: 100, title: { text: '%' }, gridLineDashStyle: 'Dot' },
+    plotOptions: { column: { borderWidth: 0, stacking: 'normal' } },
+    series,
+    legend: { enabled: true },
+    tooltip: { shared: true, valueSuffix: '%' },
+    credits: { enabled: false },
+  }
 
   return (
-    <Paper sx={{ p: 2 }}>
-      <Typography variant="h6" gutterBottom>
-        Gender Breakdown by Court (%)
-      </Typography>
-      <Box sx={{ height: 400 }}>
-        <ResponsiveContainer width="100%" height="100%">
-          <BarChart data={series} margin={{ top: 20, right: 30, left: 20, bottom: 80 }}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="name" angle={-45} textAnchor="end" height={80} tick={{ fontSize: 10 }} />
-            <YAxis domain={[0, 100]} />
-            <Tooltip />
-            <Legend />
-            <Bar dataKey="Male" stackId="a" fill={colors.Male} name="Male %" />
-            <Bar dataKey="Female" stackId="a" fill={colors.Female} name="Female %" />
-          </BarChart>
-        </ResponsiveContainer>
-      </Box>
-    </Paper>
+    <Card>
+      <CardHeader>
+        <CardTitle>Gender Breakdown by Court (%)</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="h-[400px]">
+          <HighchartsReact highcharts={Highcharts} options={options} />
+        </div>
+      </CardContent>
+    </Card>
   )
 }

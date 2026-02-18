@@ -1,14 +1,6 @@
-import { Box, Paper, Typography } from '@mui/material'
-import {
-  ResponsiveContainer,
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-} from 'recharts'
+import Highcharts from 'highcharts'
+import HighchartsReact from 'highcharts-react-official'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import type { StatRow } from '../types'
 
 interface Props {
@@ -21,7 +13,7 @@ export function TimelinessChart({ data, selectedYears, getValue }: Props) {
   const courts = [...new Set(data.filter((r) => r.Metric === 'TimelinessCriminal').map((r) => r.Court))]
   const sortedYears = [...selectedYears].sort((a, b) => a - b)
 
-  const series = courts.flatMap((court) =>
+  const seriesData = courts.flatMap((court) =>
     sortedYears.flatMap((year) => {
       const crim = getValue(court, 'TimelinessCriminal', year)
       const civil = getValue(court, 'TimelinessCivil', year)
@@ -29,25 +21,38 @@ export function TimelinessChart({ data, selectedYears, getValue }: Props) {
       return [{ court, year, name: `${court} ${year}`, Criminal: crim ?? 0, Civil: civil ?? 0 }]
     })
   )
+  const categories = seriesData.map((r) => r.name)
+
+  const series = [
+    { name: 'Criminal (days)', data: seriesData.map((r) => r.Criminal), type: 'column' as const, color: '#422AFB' },
+    { name: 'Civil (days)', data: seriesData.map((r) => r.Civil), type: 'column' as const, color: '#7551ff' },
+  ]
+
+  const options: Highcharts.Options = {
+    chart: { type: 'column', height: 400 },
+    xAxis: {
+      categories,
+      labels: { rotation: -45, style: { fontSize: '10px' } },
+      crosshair: true,
+    },
+    yAxis: { title: { text: 'Days' }, gridLineDashStyle: 'Dot' },
+    plotOptions: { column: { borderWidth: 0 } },
+    series,
+    legend: { enabled: true },
+    tooltip: { shared: true },
+    credits: { enabled: false },
+  }
 
   return (
-    <Paper sx={{ p: 2 }}>
-      <Typography variant="h6" gutterBottom>
-        Timeliness (days) – Criminal vs Civil
-      </Typography>
-      <Box sx={{ height: 400 }}>
-        <ResponsiveContainer width="100%" height="100%">
-          <BarChart data={series} margin={{ top: 20, right: 30, left: 20, bottom: 80 }}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="name" angle={-45} textAnchor="end" height={80} tick={{ fontSize: 10 }} />
-            <YAxis label={{ value: 'Days', angle: -90, position: 'insideLeft' }} />
-            <Tooltip />
-            <Legend />
-            <Bar dataKey="Criminal" fill="#0d47a1" name="Criminal (days)" />
-            <Bar dataKey="Civil" fill="#006064" name="Civil (days)" />
-          </BarChart>
-        </ResponsiveContainer>
-      </Box>
-    </Paper>
+    <Card>
+      <CardHeader>
+        <CardTitle>Timeliness (days) – Criminal vs Civil</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="h-[400px]">
+          <HighchartsReact highcharts={Highcharts} options={options} />
+        </div>
+      </CardContent>
+    </Card>
   )
 }
