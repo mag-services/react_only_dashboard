@@ -14,7 +14,7 @@ export function AnnualReportsPage() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    fetch('/annual-reports/reports.json')
+    fetch(`${import.meta.env.BASE_URL}annual-reports/reports.json`)
       .then((r) => r.ok ? r.json() : [])
       .then(setReports)
       .catch(() => setReports([]))
@@ -70,7 +70,7 @@ export function AnnualReportsPage() {
                 </CardHeader>
                 <CardContent>
                   <a
-                    href={`/annual-reports/${r.file}`}
+                    href={`${import.meta.env.BASE_URL}annual-reports/${r.file}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 rounded-lg bg-[#422AFB] px-4 py-2 text-sm font-medium text-white hover:bg-[#7551ff]"

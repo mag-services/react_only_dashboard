@@ -36,8 +36,10 @@ function parseValue(val: string): number | null {
   return Number.isNaN(n) ? null : n
 }
 
+const BASE = import.meta.env.BASE_URL
+
 async function loadYearData(year: number): Promise<StatRow[]> {
-  const res = await fetch(`/data/${year}.csv`)
+  const res = await fetch(`${BASE}data/${year}.csv`)
   if (!res.ok) throw new Error(`Failed to load ${year}.csv`)
   const text = await res.text()
   const parsed = Papa.parse<Record<string, string>>(text, { header: true, skipEmptyLines: true })
@@ -51,7 +53,7 @@ async function loadYearData(year: number): Promise<StatRow[]> {
 }
 
 async function loadAvailableYears(): Promise<number[]> {
-  const res = await fetch('/data/years.json')
+  const res = await fetch(`${BASE}data/years.json`)
   if (!res.ok) return [2018, 2020, 2021, 2022, 2023, 2024]
   const json = (await res.json()) as { years: number[] }
   return json.years ?? []
