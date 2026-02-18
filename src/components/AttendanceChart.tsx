@@ -1,6 +1,8 @@
 import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { CourtColorLegend } from './CourtColorLegend'
+import { getCourtColor, sortCourtsByOrder } from '@/lib/court-colors'
 import type { StatRow } from '../types'
 
 const ATTENDANCE_METRICS = ['AttendanceCriminal', 'AttendanceCivil', 'AttendanceEnforcement'] as const
@@ -12,7 +14,7 @@ interface Props {
 }
 
 export function AttendanceChart({ data, selectedYears, getValue }: Props) {
-  const courts = [...new Set(data.filter((r) => (ATTENDANCE_METRICS as readonly string[]).includes(r.Metric)).map((r) => r.Court))]
+  const courts = sortCourtsByOrder([...new Set(data.filter((r) => (ATTENDANCE_METRICS as readonly string[]).includes(r.Metric)).map((r) => r.Court))])
   const sortedYears = [...selectedYears].sort((a, b) => a - b)
 
   const seriesData = courts.flatMap((court) =>
@@ -42,11 +44,26 @@ export function AttendanceChart({ data, selectedYears, getValue }: Props) {
   }
 
   const categories = seriesData.map((r) => r.name)
-  const series = [
-    { name: 'Criminal', data: seriesData.map((r) => r.Criminal), type: 'column' as const, color: '#422AFB' },
-    { name: 'Civil', data: seriesData.map((r) => r.Civil), type: 'column' as const, color: '#7551ff' },
-    { name: 'Enforcement', data: seriesData.map((r) => r.Enforcement), type: 'column' as const, color: '#1565c0' },
-  ]
+  const series = courts.flatMap((court) => [
+    {
+      name: `${court} – Criminal`,
+      data: seriesData.map((r) => (r.court === court ? r.Criminal : null)),
+      type: 'column' as const,
+      color: getCourtColor(court),
+    },
+    {
+      name: `${court} – Civil`,
+      data: seriesData.map((r) => (r.court === court ? r.Civil : null)),
+      type: 'column' as const,
+      color: getCourtColor(court),
+    },
+    {
+      name: `${court} – Enforcement`,
+      data: seriesData.map((r) => (r.court === court ? r.Enforcement : null)),
+      type: 'column' as const,
+      color: getCourtColor(court),
+    },
+  ])
 
   const options: Highcharts.Options = {
     chart: { type: 'column', height: 400 },
@@ -66,7 +83,10 @@ export function AttendanceChart({ data, selectedYears, getValue }: Props) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Attendance Rates (%)</CardTitle>
+        <div className="flex flex-col gap-2">
+          <CardTitle>Attendance Rates (%)</CardTitle>
+          <CourtColorLegend courts={courts} />
+        </div>
       </CardHeader>
       <CardContent>
         <div className="h-[400px]">

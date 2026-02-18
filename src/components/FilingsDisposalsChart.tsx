@@ -1,6 +1,8 @@
 import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { CourtColorLegend } from './CourtColorLegend'
+import { getCourtColor, sortCourtsByOrder } from '@/lib/court-colors'
 import type { StatRow } from '../types'
 
 interface Props {
@@ -10,7 +12,7 @@ interface Props {
 }
 
 export function FilingsDisposalsChart({ data, selectedYears, getValue }: Props) {
-  const courts = [...new Set(data.filter((r) => r.Metric === 'Filings').map((r) => r.Court))]
+  const courts = sortCourtsByOrder([...new Set(data.filter((r) => r.Metric === 'Filings').map((r) => r.Court))])
   const sortedYears = [...selectedYears].sort((a, b) => a - b)
 
   const byCourtYear = courts.flatMap((court) =>
@@ -23,10 +25,20 @@ export function FilingsDisposalsChart({ data, selectedYears, getValue }: Props) 
   )
   const categories = byCourtYear.map((r) => r.name)
 
-  const series = [
-    { name: 'Filings', data: byCourtYear.map((r) => r.Filings), color: '#422AFB' },
-    { name: 'Disposals', data: byCourtYear.map((r) => r.Disposals), color: '#7551ff' },
-  ]
+  const series: Highcharts.SeriesColumnOptions[] = courts.flatMap((court) => [
+    {
+      name: `${court} – Filings`,
+      type: 'column',
+      data: byCourtYear.map((r) => (r.court === court ? r.Filings : null)),
+      color: getCourtColor(court),
+    },
+    {
+      name: `${court} – Disposals`,
+      type: 'column',
+      data: byCourtYear.map((r) => (r.court === court ? r.Disposals : null)),
+      color: getCourtColor(court),
+    },
+  ])
 
   const options: Highcharts.Options = {
     chart: { type: 'column', height: 400 },
@@ -37,7 +49,7 @@ export function FilingsDisposalsChart({ data, selectedYears, getValue }: Props) 
     },
     yAxis: { title: { text: '' }, gridLineDashStyle: 'Dot' },
     plotOptions: { column: { borderWidth: 0 } },
-    series: series.map((s) => ({ ...s, type: 'column' })),
+    series,
     legend: { enabled: true },
     tooltip: { shared: true },
     credits: { enabled: false },
@@ -46,7 +58,10 @@ export function FilingsDisposalsChart({ data, selectedYears, getValue }: Props) 
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Filings & Disposals by Court and Year</CardTitle>
+        <div className="flex flex-col gap-2">
+          <CardTitle>Filings & Disposals by Court and Year</CardTitle>
+          <CourtColorLegend courts={courts} />
+        </div>
       </CardHeader>
       <CardContent>
         <div className="h-[400px]">

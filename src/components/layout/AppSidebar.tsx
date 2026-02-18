@@ -1,4 +1,3 @@
-import { Link, useLocation } from 'react-router-dom'
 import {
   BarChart2,
   Users,
@@ -10,9 +9,10 @@ import {
   Scale,
   Layers,
   FileStack,
+  BookOpen,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { Checkbox } from '@/components/ui/checkbox'
+import { CourtsFilterDropdown } from '@/components/CourtsFilterDropdown'
 import { Slider } from '@/components/ui/slider'
 import { Separator } from '@/components/ui/separator'
 
@@ -23,7 +23,19 @@ const ROUTES = [
   { name: 'Performance', icon: TrendingUp },
   { name: 'Outcomes', icon: PieChart },
   { name: 'Other Metrics', icon: Users },
+  { name: 'Annual Reports', icon: FileStack },
+  { name: 'Glossary', icon: BookOpen },
 ] as const
+
+function formatLastUpdated(iso: string | null): string {
+  if (!iso) return ''
+  try {
+    const d = new Date(iso)
+    return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })
+  } catch {
+    return iso
+  }
+}
 
 interface AppSidebarProps {
   activeTab: number
@@ -35,10 +47,10 @@ interface AppSidebarProps {
   selectedCourts: string[]
   onCourtsChange: (courts: string[]) => void
   open: boolean
+  lastUpdated?: string | null
 }
 
-export function AppSidebar({ activeTab, onTabChange, years, selectedYears, onYearsChange, courts, selectedCourts, onCourtsChange, open }: AppSidebarProps) {
-  const location = useLocation()
+export function AppSidebar({ activeTab, onTabChange, years, selectedYears, onYearsChange, courts, selectedCourts, onCourtsChange, open, lastUpdated }: AppSidebarProps) {
   const rawMin = years.indexOf(selectedYears[0] ?? years[0] ?? 0)
   const rawMax = years.indexOf(selectedYears[selectedYears.length - 1] ?? years[years.length - 1] ?? 0)
   const yearMinIdx = years.length > 0 ? Math.max(0, rawMin >= 0 ? rawMin : 0) : 0
@@ -48,14 +60,6 @@ export function AppSidebar({ activeTab, onTabChange, years, selectedYears, onYea
     const [lo, hi] = [Math.min(v[0], v[1]), Math.max(v[0], v[1])]
     onYearsChange(years.slice(lo, hi + 1))
   }
-  const toggleCourt = (court: string) => {
-    const set = new Set(selectedCourts)
-    if (set.has(court)) set.delete(court)
-    else set.add(court)
-    const next = [...set].filter((c) => courts.includes(c))
-    onCourtsChange(next.length > 0 ? next : []) // allow empty for now
-  }
-
   return (
     <aside
       className={cn(
@@ -85,32 +89,14 @@ export function AppSidebar({ activeTab, onTabChange, years, selectedYears, onYea
             {route.name}
           </button>
         ))}
-        <Link
-          to="/annual-reports"
-          className={cn(
-            'flex w-full items-center gap-3 rounded-xl px-3 py-3 text-sm font-medium transition-all',
-            location.pathname === '/annual-reports'
-              ? 'bg-[#7551ff]/10 text-[#422AFB]'
-              : 'text-foreground/70 hover:bg-muted/80 hover:text-foreground'
-          )}
-        >
-          <FileStack className="size-5 shrink-0" strokeWidth={1.5} />
-          Annual Reports (PDFs)
-        </Link>
         <Separator className="my-5" />
         <div className="space-y-3">
           <p className="px-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">Courts</p>
-          <div className="flex flex-col gap-0.5">
-            {courts.map((court) => (
-              <label
-                key={court}
-                className="flex cursor-pointer items-center gap-2 rounded-lg px-2 py-2 text-sm hover:bg-muted"
-              >
-                <Checkbox checked={selectedCourts.includes(court)} onCheckedChange={() => toggleCourt(court)} />
-                <span className="truncate">{court}</span>
-              </label>
-            ))}
-          </div>
+          <CourtsFilterDropdown
+            courts={courts}
+            selectedCourts={selectedCourts}
+            onCourtsChange={onCourtsChange}
+          />
           <p className="px-2 pt-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">Years</p>
           <div className="space-y-2 px-2">
             <p className="text-sm font-medium">
@@ -140,18 +126,20 @@ export function AppSidebar({ activeTab, onTabChange, years, selectedYears, onYea
       </nav>
       <div className="p-4">
         <div
-          className="flex flex-col gap-3 rounded-2xl p-4 text-white"
+          className="flex flex-col gap-2 rounded-2xl p-4 text-white"
           style={{
             background: 'linear-gradient(135deg, #7551ff 0%, #a78bfa 50%, #60a5fa 100%)',
             boxShadow: '0 4px 14px 0 rgba(117, 81, 255, 0.4)',
           }}
         >
-          <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-white/20">
+          <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-white/20 shrink-0">
             <Scale className="size-6" />
           </div>
-          <div>
-            <p className="text-sm font-semibold opacity-95">Vanuatu Judiciary</p>
-            <p className="text-xs opacity-80">Annual Reports Statistics</p>
+          <div className="min-w-0">
+            <p className="text-sm font-semibold opacity-95">Data extracted from Vanuatu Courts Annual Reports</p>
+            {lastUpdated && (
+              <p className="mt-0.5 text-xs opacity-80">Last updated: {formatLastUpdated(lastUpdated)}</p>
+            )}
           </div>
         </div>
       </div>

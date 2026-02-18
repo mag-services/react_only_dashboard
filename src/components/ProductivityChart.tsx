@@ -1,6 +1,8 @@
 import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { CourtColorLegend } from './CourtColorLegend'
+import { getCourtColor, sortCourtsByOrder } from '@/lib/court-colors'
 import type { StatRow } from '../types'
 
 interface Props {
@@ -9,17 +11,15 @@ interface Props {
   getValue: (court: string, metric: string, year?: number) => number | null
 }
 
-const COLORS = ['#422AFB', '#7551ff', '#6B7FFF', '#4318FF']
-
 export function ProductivityChart({ data, selectedYears, getValue }: Props) {
-  const courts = [...new Set(data.filter((r) => r.Metric === 'Productivity').map((r) => r.Court))]
+  const courts = sortCourtsByOrder([...new Set(data.filter((r) => r.Metric === 'Productivity').map((r) => r.Court))])
   const sortedYears = [...selectedYears].sort((a, b) => a - b)
 
-  const series = courts.map((court, i) => ({
+  const series = courts.map((court) => ({
     name: court,
     type: 'line' as const,
     data: sortedYears.map((year) => getValue(court, 'Productivity', year) ?? 0),
-    color: COLORS[i % COLORS.length],
+    color: getCourtColor(court),
   }))
 
   const hasData = series.some((s) => s.data.some((v) => v > 0))
@@ -49,7 +49,10 @@ export function ProductivityChart({ data, selectedYears, getValue }: Props) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Productivity (cases per judge/magistrate)</CardTitle>
+        <div className="flex flex-col gap-2">
+          <CardTitle>Productivity (cases per judge/magistrate)</CardTitle>
+          <CourtColorLegend courts={courts} />
+        </div>
       </CardHeader>
       <CardContent>
         <div className="h-[400px]">

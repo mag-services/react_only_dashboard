@@ -1,9 +1,8 @@
-import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { useState, useEffect } from 'react'
 import { Menu } from 'lucide-react'
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
 import { Button } from '@/components/ui/button'
-import { Checkbox } from '@/components/ui/checkbox'
+import { CourtsFilterDropdown } from '@/components/CourtsFilterDropdown'
 import { Slider } from '@/components/ui/slider'
 import { Separator } from '@/components/ui/separator'
 
@@ -14,7 +13,19 @@ const ROUTES = [
   'Performance',
   'Outcomes',
   'Other Metrics',
+  'Annual Reports',
+  'Glossary',
 ] as const
+
+function formatLastUpdated(iso: string | null): string {
+  if (!iso) return ''
+  try {
+    const d = new Date(iso)
+    return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })
+  } catch {
+    return iso
+  }
+}
 
 interface AppSidebarSheetProps {
   activeTab: number
@@ -25,6 +36,7 @@ interface AppSidebarSheetProps {
   courts: readonly string[]
   selectedCourts: string[]
   onCourtsChange: (courts: string[]) => void
+  lastUpdated?: string | null
 }
 
 export function AppSidebarSheet({
@@ -36,8 +48,19 @@ export function AppSidebarSheet({
   courts,
   selectedCourts,
   onCourtsChange,
+  lastUpdated: propLastUpdated,
 }: AppSidebarSheetProps) {
   const [open, setOpen] = useState(false)
+  const [fetchedLastUpdated, setFetchedLastUpdated] = useState<string | null>(null)
+  const lastUpdated = propLastUpdated ?? fetchedLastUpdated
+
+  useEffect(() => {
+    if (propLastUpdated !== undefined) return
+    fetch(`${import.meta.env.BASE_URL}data/years.json`)
+      .then((r) => (r.ok ? r.json() : null))
+      .then((json) => setFetchedLastUpdated(json?.lastUpdated ?? null))
+      .catch(() => {})
+  }, [propLastUpdated])
 
   const rawMin = years.indexOf(selectedYears[0] ?? years[0] ?? 0)
   const rawMax = years.indexOf(selectedYears[selectedYears.length - 1] ?? years[years.length - 1] ?? 0)
@@ -48,14 +71,6 @@ export function AppSidebarSheet({
     const [lo, hi] = [Math.min(v[0], v[1]), Math.max(v[0], v[1])]
     onYearsChange(years.slice(lo, hi + 1))
   }
-  const toggleCourt = (court: string) => {
-    const set = new Set(selectedCourts)
-    if (set.has(court)) set.delete(court)
-    else set.add(court)
-    const next = [...set].filter((c) => courts.includes(c))
-    onCourtsChange(next.length > 0 ? next : [])
-  }
-
   const handleSelect = (i: number) => {
     onTabChange(i)
     setOpen(false)
@@ -91,30 +106,14 @@ export function AppSidebarSheet({
                 {name}
               </button>
             ))}
-            <Link
-              to="/annual-reports"
-              onClick={() => setOpen(false)}
-              className="block w-full rounded-xl px-3 py-3 text-left text-sm font-medium transition-all hover:bg-muted/80"
-            >
-              Annual Reports (PDFs)
-            </Link>
             <Separator className="my-5" />
             <div className="space-y-3">
               <p className="px-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">Courts</p>
-              <div className="flex flex-col gap-0.5">
-                {courts.map((court) => (
-                  <label
-                    key={court}
-                    className="flex cursor-pointer items-center gap-2 rounded-lg px-2 py-2 text-sm hover:bg-muted"
-                  >
-                    <Checkbox
-                      checked={selectedCourts.includes(court)}
-                      onCheckedChange={() => toggleCourt(court)}
-                    />
-                    <span className="truncate">{court}</span>
-                  </label>
-                ))}
-              </div>
+              <CourtsFilterDropdown
+                courts={courts}
+                selectedCourts={selectedCourts}
+                onCourtsChange={onCourtsChange}
+              />
               <p className="px-2 pt-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">Years</p>
               <div className="space-y-2 px-2">
                 <p className="text-sm font-medium">
@@ -144,14 +143,16 @@ export function AppSidebarSheet({
           </nav>
           <div className="p-4">
             <div
-              className="flex flex-col gap-3 rounded-2xl p-4 text-white"
+              className="flex flex-col gap-2 rounded-2xl p-4 text-white"
               style={{
                 background: 'linear-gradient(135deg, #7551ff 0%, #a78bfa 50%, #60a5fa 100%)',
                 boxShadow: '0 4px 14px 0 rgba(117, 81, 255, 0.4)',
               }}
             >
-              <p className="text-sm font-semibold opacity-95">Vanuatu Judiciary</p>
-              <p className="text-xs opacity-80">Annual Reports Statistics</p>
+              <p className="text-sm font-semibold opacity-95">Data extracted from Vanuatu Courts Annual Reports</p>
+              {lastUpdated && (
+                <p className="text-xs opacity-80">Last updated: {formatLastUpdated(lastUpdated)}</p>
+              )}
             </div>
           </div>
         </div>

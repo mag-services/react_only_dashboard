@@ -3,6 +3,7 @@ import Papa from 'papaparse'
 import type { StatRow } from './types'
 import { AppSidebar } from './components/layout/AppSidebar'
 import { AppSidebarSheet } from './components/layout/AppSidebarSheet'
+import { AppFooter } from './components/layout/AppFooter'
 import { PageIndicators } from './components/PageIndicators'
 import { OverviewPage } from './pages/OverviewPage'
 import { PendingCasesPage } from './pages/PendingCasesPage'
@@ -10,6 +11,8 @@ import { WorkloadPage } from './pages/WorkloadPage'
 import { PerformancePage } from './pages/PerformancePage'
 import { OutcomesPage } from './pages/OutcomesPage'
 import { OtherMetricsPage } from './pages/OtherMetricsPage'
+import { AnnualReportsPage } from './pages/AnnualReportsPage'
+import { GlossaryPage } from './pages/GlossaryPage'
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { ChevronRight, PanelLeftClose, PanelLeftOpen } from 'lucide-react'
@@ -21,6 +24,8 @@ const SECTION_NAMES = [
   'Performance',
   'Outcomes',
   'Other Metrics',
+  'Annual Reports',
+  'Glossary',
 ] as const
 
 export const COURTS = [
@@ -52,15 +57,16 @@ async function loadYearData(year: number): Promise<StatRow[]> {
   }))
 }
 
-async function loadAvailableYears(): Promise<number[]> {
+async function loadAvailableYears(): Promise<{ years: number[]; lastUpdated?: string }> {
   const res = await fetch(`${BASE}data/years.json`)
-  if (!res.ok) return [2018, 2020, 2021, 2022, 2023, 2024]
-  const json = (await res.json()) as { years: number[] }
-  return json.years ?? []
+  if (!res.ok) return { years: [2018, 2020, 2021, 2022, 2023, 2024] }
+  const json = (await res.json()) as { years?: number[]; lastUpdated?: string }
+  return { years: json.years ?? [], lastUpdated: json.lastUpdated }
 }
 
 export default function App() {
   const [years, setYears] = useState<number[]>([])
+  const [lastUpdated, setLastUpdated] = useState<string | null>(null)
   const [selectedYears, setSelectedYears] = useState<number[]>([])
   const [selectedCourts, setSelectedCourts] = useState<string[]>(() => [...COURTS])
   const [data, setData] = useState<StatRow[]>([])
@@ -73,8 +79,10 @@ export default function App() {
 
   const loadYears = useCallback(async () => {
     try {
-      const y = await loadAvailableYears()
+      const res = await loadAvailableYears()
+      const y = res.years
       setYears(y)
+      setLastUpdated(res.lastUpdated ?? null)
       setSelectedYears((prev) => (prev.length === 0 && y.length > 0 ? (y.length >= 3 ? y.slice(-3) : y) : prev))
     } catch (e) {
       setError((e as Error).message)
@@ -133,6 +141,7 @@ export default function App() {
         selectedCourts={selectedCourts}
         onCourtsChange={setSelectedCourts}
         open={sidebarOpen}
+        lastUpdated={lastUpdated}
       />
 
       <div
@@ -151,6 +160,7 @@ export default function App() {
                 courts={COURTS}
                 selectedCourts={selectedCourts}
                 onCourtsChange={setSelectedCourts}
+                lastUpdated={lastUpdated}
                 />
               </div>
               <Button
@@ -187,7 +197,7 @@ export default function App() {
             </div>
           )}
 
-          {!loading && selectedYears.length === 0 && (
+          {!loading && activeTab < 6 && selectedYears.length === 0 && (
             <Card className="shadow-sm">
               <CardContent className="pt-6">
                 <p className="text-muted-foreground">Select at least one year to view data.</p>
@@ -195,7 +205,7 @@ export default function App() {
             </Card>
           )}
 
-          {!loading && selectedYears.length > 0 && selectedCourts.length === 0 && (
+          {!loading && activeTab < 6 && selectedYears.length > 0 && selectedCourts.length === 0 && (
             <Card className="shadow-sm">
               <CardContent className="pt-6">
                 <p className="text-muted-foreground">Select at least one court to view data.</p>
@@ -203,7 +213,7 @@ export default function App() {
             </Card>
           )}
 
-          {!loading && selectedYears.length > 0 && selectedCourts.length > 0 && filteredData.length === 0 && (
+          {!loading && activeTab < 6 && selectedYears.length > 0 && selectedCourts.length > 0 && filteredData.length === 0 && (
             <Card className="shadow-sm">
               <CardContent className="pt-6">
                 <p className="text-muted-foreground">No data available for the selected filters.</p>
@@ -211,9 +221,9 @@ export default function App() {
             </Card>
           )}
 
-          {!loading && data.length > 0 && (
+          {!loading && data.length > 0 && activeTab < 6 && (
             <>
-              <PageIndicators data={filteredData} activeTab={activeTab} />
+              {activeTab !== 0 && <PageIndicators data={filteredData} activeTab={activeTab} />}
               <div className="grid gap-6 xl:grid-cols-1">
                 {activeTab === 0 && <OverviewPage data={filteredData} selectedYears={selectedYears} getValue={getValue} />}
                 {activeTab === 1 && <PendingCasesPage data={filteredData} selectedYears={selectedYears} getValue={getValue} getRowsByMetric={getRowsByMetric} />}
@@ -224,7 +234,14 @@ export default function App() {
               </div>
             </>
           )}
+          {(activeTab === 6 || activeTab === 7) && (
+            <div className="grid gap-6 xl:grid-cols-1">
+              {activeTab === 6 && <AnnualReportsPage embedded />}
+              {activeTab === 7 && <GlossaryPage embedded />}
+            </div>
+          )}
         </main>
+        <AppFooter />
       </div>
     </div>
   )

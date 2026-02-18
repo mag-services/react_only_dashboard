@@ -1,6 +1,8 @@
 import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { CourtColorLegend } from './CourtColorLegend'
+import { getCourtColor, getCourtColorLight, sortCourtsByOrder } from '@/lib/court-colors'
 import type { StatRow } from '../types'
 
 interface Props {
@@ -10,7 +12,7 @@ interface Props {
 }
 
 export function GenderBreakdownChart({ data, selectedYears, getValue }: Props) {
-  const courts = [...new Set(data.filter((r) => r.Metric === 'Gender_Male').map((r) => r.Court))]
+  const courts = sortCourtsByOrder([...new Set(data.filter((r) => r.Metric === 'Gender_Male').map((r) => r.Court))])
   const sortedYears = [...selectedYears].sort((a, b) => a - b)
 
   const seriesData = courts.flatMap((court) =>
@@ -22,10 +24,22 @@ export function GenderBreakdownChart({ data, selectedYears, getValue }: Props) {
   )
   const categories = seriesData.map((r) => r.name)
 
-  const series = [
-    { name: 'Male %', data: seriesData.map((r) => r.Male), type: 'column' as const, color: '#422AFB', stack: 'gender' },
-    { name: 'Female %', data: seriesData.map((r) => r.Female), type: 'column' as const, color: '#7551ff', stack: 'gender' },
-  ]
+  const series: Highcharts.SeriesColumnOptions[] = courts.flatMap((court) => [
+    {
+      name: `${court} – Male`,
+      data: seriesData.map((r) => (r.court === court ? r.Male : null)),
+      type: 'column',
+      color: getCourtColor(court),
+      stack: 'gender',
+    },
+    {
+      name: `${court} – Female`,
+      data: seriesData.map((r) => (r.court === court ? r.Female : null)),
+      type: 'column',
+      color: getCourtColorLight(court),
+      stack: 'gender',
+    },
+  ])
 
   const options: Highcharts.Options = {
     chart: { type: 'column', height: 400 },
@@ -45,7 +59,10 @@ export function GenderBreakdownChart({ data, selectedYears, getValue }: Props) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Gender Breakdown by Court (%)</CardTitle>
+        <div className="flex flex-col gap-2">
+          <CardTitle>Gender Breakdown by Court (%)</CardTitle>
+          <CourtColorLegend courts={courts} />
+        </div>
       </CardHeader>
       <CardContent>
         <div className="h-[400px]">

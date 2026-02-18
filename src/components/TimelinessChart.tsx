@@ -1,6 +1,8 @@
 import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { CourtColorLegend } from './CourtColorLegend'
+import { getCourtColor, sortCourtsByOrder } from '@/lib/court-colors'
 import type { StatRow } from '../types'
 
 interface Props {
@@ -10,7 +12,7 @@ interface Props {
 }
 
 export function TimelinessChart({ data, selectedYears, getValue }: Props) {
-  const courts = [...new Set(data.filter((r) => r.Metric === 'TimelinessCriminal').map((r) => r.Court))]
+  const courts = sortCourtsByOrder([...new Set(data.filter((r) => r.Metric === 'TimelinessCriminal').map((r) => r.Court))])
   const sortedYears = [...selectedYears].sort((a, b) => a - b)
 
   const seriesData = courts.flatMap((court) =>
@@ -23,10 +25,20 @@ export function TimelinessChart({ data, selectedYears, getValue }: Props) {
   )
   const categories = seriesData.map((r) => r.name)
 
-  const series = [
-    { name: 'Criminal (days)', data: seriesData.map((r) => r.Criminal), type: 'column' as const, color: '#422AFB' },
-    { name: 'Civil (days)', data: seriesData.map((r) => r.Civil), type: 'column' as const, color: '#7551ff' },
-  ]
+  const series: Highcharts.SeriesColumnOptions[] = courts.flatMap((court) => [
+    {
+      name: `${court} – Criminal (days)`,
+      data: seriesData.map((r) => (r.court === court ? r.Criminal : null)),
+      type: 'column',
+      color: getCourtColor(court),
+    },
+    {
+      name: `${court} – Civil (days)`,
+      data: seriesData.map((r) => (r.court === court ? r.Civil : null)),
+      type: 'column',
+      color: getCourtColor(court),
+    },
+  ])
 
   const options: Highcharts.Options = {
     chart: { type: 'column', height: 400 },
@@ -53,7 +65,10 @@ export function TimelinessChart({ data, selectedYears, getValue }: Props) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Timeliness (days) – Criminal vs Civil</CardTitle>
+        <div className="flex flex-col gap-2">
+          <CardTitle>Timeliness (days) – Criminal vs Civil</CardTitle>
+          <CourtColorLegend courts={courts} />
+        </div>
       </CardHeader>
       <CardContent>
         <div className="h-[400px]">

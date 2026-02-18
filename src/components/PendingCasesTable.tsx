@@ -4,6 +4,8 @@ import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { DataTable } from '@/components/DataTable'
+import { CourtColorLegend } from './CourtColorLegend'
+import { getCourtColor, sortCourtsByOrder } from '@/lib/court-colors'
 import type { StatRow } from '../types'
 
 interface PendingRow {
@@ -22,22 +24,47 @@ export function PendingCasesTable({ getRowsByMetric, selectedYears }: Props) {
   const pendingRows = getRowsByMetric('Pending')
   const pdrRows = getRowsByMetric('PDR')
 
-  const tableData = useMemo(
-    () =>
-      pendingRows.map((r) => ({
-        court: r.Court,
-        year: r.Year,
-        pending: r.valueNum,
-        pdr: pdrRows.find((p) => p.Court === r.Court && p.Year === r.Year)?.valueNum ?? null,
-      })),
-    [pendingRows, pdrRows]
-  )
+  const tableData = useMemo(() => {
+    const rows = pendingRows.map((r) => ({
+      court: r.Court,
+      year: r.Year,
+      pending: r.valueNum,
+      pdr: pdrRows.find((p) => p.Court === r.Court && p.Year === r.Year)?.valueNum ?? null,
+    }))
+    const courtOrder = sortCourtsByOrder([...new Set(rows.map((r) => r.court))])
+    const byCourt = (a: string, b: string) => courtOrder.indexOf(a) - courtOrder.indexOf(b)
+    return [...rows].sort((a, b) => byCourt(a.court, b.court) || Number(a.year) - Number(b.year))
+  }, [pendingRows, pdrRows])
 
   const chartData = tableData.map((r) => ({ ...r, name: `${r.court} ${r.year}`, Pending: r.pending ?? 0 }))
+  const courts = sortCourtsByOrder([...new Set(tableData.map((r) => r.court))])
+  const series = courts.map((court) => ({
+    name: court,
+    type: 'column' as const,
+    data: chartData.map((r) => (r.court === court ? (r.pending ?? 0) : null)),
+    color: getCourtColor(court),
+  }))
 
   const columns = useMemo<ColumnDef<PendingRow>[]>(
     () => [
-      { accessorKey: 'court', header: 'Court', meta: { className: '' } },
+      {
+        accessorKey: 'court',
+        header: 'Court',
+        meta: { className: '' },
+        cell: ({ getValue }) => {
+          const court = getValue() as string
+          return (
+            <span className="flex items-center gap-2">
+              <span
+                className="h-2.5 w-2.5 shrink-0 rounded-full"
+                style={{ backgroundColor: getCourtColor(court) }}
+                aria-hidden
+              />
+              {court}
+            </span>
+          )
+        },
+      },
       { accessorKey: 'year', header: 'Year', meta: { className: 'text-right' }, cell: ({ getValue }) => <span className="block text-right">{getValue()}</span> },
       { accessorKey: 'pending', header: 'Pending', meta: { className: 'text-right' }, cell: ({ getValue }) => <span className="block text-right">{getValue() ?? 'N/A'}</span> },
       { accessorKey: 'pdr', header: 'PDR', meta: { className: 'text-right' }, cell: ({ getValue }) => <span className="block text-right">{getValue() ?? 'N/A'}</span> },
@@ -54,8 +81,8 @@ export function PendingCasesTable({ getRowsByMetric, selectedYears }: Props) {
     },
     yAxis: { gridLineDashStyle: 'Dot' },
     plotOptions: { column: { borderWidth: 0 } },
-    series: [{ name: 'Pending', data: chartData.map((r) => r.Pending), type: 'column', color: '#422AFB' }],
-    legend: { enabled: false },
+    series,
+    legend: { enabled: true },
     tooltip: { shared: false },
     credits: { enabled: false },
   }
@@ -63,7 +90,10 @@ export function PendingCasesTable({ getRowsByMetric, selectedYears }: Props) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Pending Cases & PDR</CardTitle>
+        <div className="flex flex-col gap-2">
+          <CardTitle>Pending Cases & PDR</CardTitle>
+          <CourtColorLegend courts={courts} />
+        </div>
       </CardHeader>
       <CardContent>
         <DataTable

@@ -163,5 +163,6 @@ for (const year of years) {
 }
 
 const manifestPath = path.join(ROOT, 'public', 'data', 'years.json')
-fs.writeFileSync(manifestPath, JSON.stringify({ years }))
-console.log(`Wrote public/data/years.json (${years.join(', ')})`)
+const lastUpdated = new Date().toISOString().slice(0, 10)
+fs.writeFileSync(manifestPath, JSON.stringify({ years, lastUpdated }))
+console.log(`Wrote public/data/years.json (${years.join(', ')}), lastUpdated: ${lastUpdated}`)
