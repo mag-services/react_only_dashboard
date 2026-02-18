@@ -1,5 +1,32 @@
-import { FileText, TrendingUp, Clock, Scale, FileQuestion, Layers, Users, PieChart, TrendingDown } from 'lucide-react'
+import { FileText, TrendingUp, Clock, Scale, FileQuestion, Layers, Users, PieChart, TrendingDown, CircleHelp } from 'lucide-react'
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import type { StatRow } from '../types'
+
+const GLOSSARY: Record<string, string> = {
+  'Total Filings': 'Number of new cases registered with the court in the selected period. Includes criminal, civil, and other matter types.',
+  'Total Disposals': 'Number of cases that were completed (closed) in the selected period. A disposal means the court has reached a final outcome.',
+  'Avg Clearance Rate': 'Percentage of cases disposed (closed) compared to cases filed in the same period. ≥100% means the court is keeping up or reducing backlog; <100% means backlog is growing.',
+  'Pending Cases': 'Number of cases still open (not yet disposed) at the end of the period. These cases are awaiting hearing, judgment, or other resolution.',
+  'Net Change in Pending (YoY)': 'Year-over-year change in total pending cases. Negative means backlog decreased; positive means it grew. Compare latest year to previous year.',
+  'Avg PDR': 'Pending to Disposal Ratio — how many years of work remain at current disposal rates. Lower is better. Target: ≤1.0 for Supreme Court, ≤0.5 for Magistrates and Island Court.',
+  'Avg Pending Age (%)': 'Share of pending cases that are older than 2–3 years (2 years for Magistrates & Island Court, 3 years for Supreme Court). Lower is better — indicates fewer long-delayed cases.',
+  'Reserved Judgments': 'Cases where a judge has heard the matter but not yet delivered the final written judgment. Typically tracked with a benchmark (e.g. most within 90 days).',
+  'Workload Filings': 'New cases filed by type (Criminal, Civil, PI, DV, etc.) across courts. Shows where demand is concentrated.',
+  'Location Filings': 'Cases filed by location or province. Shows geographic distribution of court workload.',
+  'DV Filings': 'Domestic violence protection order applications filed in Magistrates Court. Reflects demand for family safety orders.',
+  'Avg Timeliness (Criminal) — target 180 days': 'Average number of days from filing to final disposition for criminal cases. Target is ≤180 days. Lower means faster resolution.',
+  'Avg Timeliness (Civil) — target 365 days': 'Average number of days from filing to final disposition for civil cases. Target is ≤365 days. Lower means faster resolution.',
+  'Avg Attendance (%)': 'Average number of court appearances (visits) needed to dispose a case. Lower is better — fewer adjournments and lower cost to parties.',
+  'Avg Productivity': 'Cases disposed per full-time judge or magistrate per year. Measures judicial output relative to workforce.',
+  'Outcome Records': 'Number of case outcome records (e.g. Guilty, Dismissed, Withdrawn) in the data. Used for outcome analysis.',
+  'CoA Filings': 'Cases filed (appeals) at the Court of Appeal. Appeals from Supreme Court first-instance decisions.',
+  'CoA Avg Dismissed %': 'Share of Court of Appeal matters that were dismissed (appeal not allowed).',
+  'CoA Avg Allowed %': 'Share of Court of Appeal matters where the appeal was allowed (original decision varied or overturned).',
+  'Charge Orders': 'Criminal charge orders issued. Reflects volume of formal charges before the courts.',
+  'Avg Male (%)': 'Percentage of parties (or accused) in the data who are male. Used for gender-disaggregated analysis.',
+  'Avg Female (%)': 'Percentage of parties (or accused) in the data who are female. Used for gender-disaggregated analysis.',
+  'DV/Protection Order Trend (YoY)': 'Year-over-year change in DV protection order filings. Rising numbers may indicate increased reporting or demand for protection.',
+}
 
 function parseVal(v: string): number {
   if (!v || String(v).toLowerCase() === 'na') return 0
@@ -162,7 +189,25 @@ export function PageIndicators({ data, activeTab }: PageIndicatorsProps) {
             <card.icon className="size-6" style={{ color: card.color }} strokeWidth={1.5} />
           </div>
           <div className="ml-4 min-w-0">
-            <p className="text-sm font-medium text-muted-foreground">{card.label}</p>
+            <div className="flex items-center gap-1">
+              <p className="text-sm font-medium text-muted-foreground">{card.label}</p>
+              {GLOSSARY[card.label] && (
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <button
+                      type="button"
+                      className="inline-flex size-4 shrink-0 items-center justify-center rounded-full text-muted-foreground hover:bg-muted hover:text-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                      aria-label="Definition"
+                    >
+                      <CircleHelp className="size-4" strokeWidth={1.5} />
+                    </button>
+                  </PopoverTrigger>
+                  <PopoverContent align="start" className="max-w-sm text-sm">
+                    <p className="text-foreground">{GLOSSARY[card.label]}</p>
+                  </PopoverContent>
+                </Popover>
+              )}
+            </div>
             <p className="truncate text-xl font-bold text-foreground">{card.value}</p>
             {card.subtitle && (
               <p className="mt-0.5 text-[10px] leading-tight text-muted-foreground">{card.subtitle}</p>
