@@ -56,6 +56,25 @@ export function PageIndicators({ data, activeTab }: PageIndicatorsProps) {
   const workloadFilings = data.filter((r) => r.Metric.startsWith('Workload_') && r.Metric.endsWith('_Filings')).reduce((sum, r) => sum + parseVal(r.Value), 0)
   const locationFilings = data.filter((r) => r.Metric.startsWith('Location_') && r.Metric.endsWith('_Filings')).reduce((sum, r) => sum + parseVal(r.Value), 0)
   const dvFilings = data.filter((r) => r.Metric === 'DV_Filings').reduce((sum, r) => sum + parseVal(r.Value), 0)
+  const dvByYear = data
+    .filter((r) => r.Metric === 'DV_Filings')
+    .reduce<Record<string, number>>((acc, r) => {
+      acc[r.Year] = (acc[r.Year] ?? 0) + parseVal(r.Value)
+      return acc
+    }, {})
+  const yearsWithDV = [...new Set(Object.keys(dvByYear))].sort((a, b) => Number(a) - Number(b))
+  const dvYoY =
+    yearsWithDV.length >= 2
+      ? (() => {
+          const prevY = yearsWithDV[yearsWithDV.length - 2]
+          const currY = yearsWithDV[yearsWithDV.length - 1]
+          const prevVal = dvByYear[prevY] ?? 0
+          const currVal = dvByYear[currY] ?? 0
+          const netChange = currVal - prevVal
+          const pctChange = prevVal > 0 ? (100 * netChange) / prevVal : 0
+          return { netChange, pctChange, prevY, currY }
+        })()
+      : null
   const timelinessCrim = data.filter((r) => r.Metric === 'TimelinessCriminal')
   const avgTimelinessCrim = timelinessCrim.length > 0 ? timelinessCrim.reduce((sum, r) => sum + parseVal(r.Value), 0) / timelinessCrim.length : 0
   const timelinessCivil = data.filter((r) => r.Metric === 'TimelinessCivil')
@@ -120,6 +139,16 @@ export function PageIndicators({ data, activeTab }: PageIndicatorsProps) {
       { label: 'Avg Male (%)', value: `${avgMale.toFixed(1)}%`, icon: Users, color: '#7551ff' },
       { label: 'Avg Female (%)', value: `${avgFemale.toFixed(1)}%`, icon: Users, color: '#6B7FFF' },
       { label: 'DV Filings', value: dvFilings.toLocaleString(), icon: FileText, color: '#4318FF' },
+      {
+        label: 'DV/Protection Order Trend (YoY)',
+        value:
+          dvYoY != null
+            ? `${dvYoY.netChange >= 0 ? '+' : ''}${dvYoY.netChange.toLocaleString()} (${dvYoY.pctChange >= 0 ? '+' : ''}${dvYoY.pctChange.toFixed(1)}%)`
+            : 'N/A',
+        subtitle: dvYoY == null ? 'Needs at least two selected years for the comparison' : undefined,
+        icon: dvYoY?.netChange != null && dvYoY.netChange > 0 ? TrendingUp : TrendingDown,
+        color: dvYoY?.netChange != null && dvYoY.netChange > 0 ? '#dc2626' : '#22c55e',
+      },
     ],
   }
 
