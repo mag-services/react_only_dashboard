@@ -87,7 +87,7 @@ export function PageIndicators({ data, activeTab }: PageIndicatorsProps) {
         value:
           pendingYoY != null
             ? `${pendingYoY.netChange >= 0 ? '+' : ''}${pendingYoY.netChange.toLocaleString()} (${pendingYoY.pctChange >= 0 ? '+' : ''}${pendingYoY.pctChange.toFixed(1)}%)`
-            : 'N/A',
+            : 'N/A — Needs at least two selected years for the comparison',
         icon: pendingYoY?.netChange != null && pendingYoY.netChange < 0 ? TrendingDown : TrendingUp,
         color: pendingYoY?.netChange != null && pendingYoY.netChange < 0 ? '#22c55e' : '#6B7FFF',
       },
@@ -132,7 +132,7 @@ export function PageIndicators({ data, activeTab }: PageIndicatorsProps) {
           </div>
           <div className="ml-4 min-w-0">
             <p className="text-sm font-medium text-muted-foreground">{card.label}</p>
-            <p className="truncate text-xl font-bold text-foreground">{card.value}</p>
+            <p className="line-clamp-2 break-words text-xl font-bold text-foreground">{card.value}</p>
           </div>
         </div>
       ))}
