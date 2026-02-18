@@ -1,0 +1,68 @@
+Court,Year,Metric,Value,Unit
+Court of Appeal,2024,Filings,80,
+Court of Appeal,2024,Disposals,82,
+Court of Appeal,2024,ClearanceRate,102,%
+Court of Appeal,2024,Pending,24,
+Court of Appeal,2024,PDR,0.3,
+Court of Appeal,2024,PendingAge,0,days
+Court of Appeal,2024,TimelinessCriminal,100,days
+Court of Appeal,2024,TimelinessCivil,150,days
+Court of Appeal,2024,ReservedJudgments,0,
+Supreme Court,2024,Filings,879,
+Supreme Court,2024,Disposals,821,
+Supreme Court,2024,ClearanceRate,93,%
+Supreme Court,2024,Pending,1000,
+Supreme Court,2024,PDR,1.2,
+Supreme Court,2024,PendingAge,25,days
+Supreme Court,2024,TimelinessCriminal,197,days
+Supreme Court,2024,TimelinessCivil,630,days
+Supreme Court,2024,AttendanceCriminal,4,%
+Supreme Court,2024,AttendanceCivil,5.5,%
+Supreme Court,2024,AttendanceEnforcement,8.3,%
+Supreme Court,2024,Productivity,117,
+Supreme Court,2024,ReservedJudgments,48,
+Magistrates Court,2024,Filings,2383,
+Magistrates Court,2024,Disposals,2105,
+Magistrates Court,2024,ClearanceRate,88,%
+Magistrates Court,2024,Pending,1394,
+Magistrates Court,2024,PDR,0.7,
+Magistrates Court,2024,PendingAge,24,days
+Magistrates Court,2024,TimelinessCriminal,246,days
+Magistrates Court,2024,TimelinessCivil,300,days
+Magistrates Court,2024,AttendanceCriminal,3.1,%
+Magistrates Court,2024,AttendanceCivil,5.7,%
+Magistrates Court,2024,AttendanceEnforcement,9.6,%
+Magistrates Court,2024,Productivity,298,
+Magistrates Court,2024,ReservedJudgments,14,
+Island Court,2024,Filings,388,
+Island Court,2024,Disposals,390,
+Island Court,2024,ClearanceRate,101,%
+Island Court,2024,Pending,695,
+Island Court,2024,PDR,1.8,
+Island Court,2024,PendingAge,62,days
+Island Court,2024,TimelinessCriminal,400,days
+Island Court,2024,TimelinessCivil,500,days
+Supreme Court,2024,Gender_Male,60,%
+Supreme Court,2024,Gender_Female,40,%
+Magistrates Court,2024,Gender_Male,65,%
+Magistrates Court,2024,Gender_Female,35,%
+Court of Appeal,2024,Civil_Guilty,30,%
+Court of Appeal,2024,Civil_NotGuilty,0,%
+Court of Appeal,2024,Civil_Withdrawn,10,%
+Court of Appeal,2024,Civil_Committed,0,%
+Court of Appeal,2024,Civil_Dismissed,60,%
+Supreme Court,2024,Criminal_Guilty,90,%
+Supreme Court,2024,Criminal_NotGuilty,5,%
+Supreme Court,2024,Criminal_Withdrawn,5,%
+Supreme Court,2024,Criminal_Committed,0,%
+Supreme Court,2024,Criminal_Dismissed,0,%
+Magistrates Court,2024,Criminal_Guilty,71,%
+Magistrates Court,2024,Criminal_NotGuilty,1,%
+Magistrates Court,2024,Criminal_Withdrawn,20,%
+Magistrates Court,2024,Criminal_Committed,0,%
+Magistrates Court,2024,Criminal_Dismissed,8,%
+Magistrates Court,2024,PI_Guilty,0,%
+Magistrates Court,2024,PI_NotGuilty,0,%
+Magistrates Court,2024,PI_Withdrawn,15,%
+Magistrates Court,2024,PI_Committed,81,%
+Magistrates Court,2024,PI_Dismissed,4,%

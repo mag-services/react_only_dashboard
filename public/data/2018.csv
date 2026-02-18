@@ -1,0 +1,68 @@
+Court,Year,Metric,Value,Unit
+Court of Appeal,2018,Filings,74,
+Court of Appeal,2018,Disposals,72,
+Court of Appeal,2018,ClearanceRate,97,%
+Court of Appeal,2018,Pending,28,
+Court of Appeal,2018,PDR,0.35,
+Court of Appeal,2018,PendingAge,0,days
+Court of Appeal,2018,TimelinessCriminal,100,days
+Court of Appeal,2018,TimelinessCivil,150,days
+Court of Appeal,2018,ReservedJudgments,0,
+Supreme Court,2018,Filings,760,
+Supreme Court,2018,Disposals,750,
+Supreme Court,2018,ClearanceRate,99,%
+Supreme Court,2018,Pending,860,
+Supreme Court,2018,PDR,1.0,
+Supreme Court,2018,PendingAge,20,days
+Supreme Court,2018,TimelinessCriminal,180,days
+Supreme Court,2018,TimelinessCivil,450,days
+Supreme Court,2018,AttendanceCriminal,4,%
+Supreme Court,2018,AttendanceCivil,5.5,%
+Supreme Court,2018,AttendanceEnforcement,8,%
+Supreme Court,2018,Productivity,105,
+Supreme Court,2018,ReservedJudgments,58,
+Magistrates Court,2018,Filings,1800,
+Magistrates Court,2018,Disposals,1800,
+Magistrates Court,2018,ClearanceRate,100,%
+Magistrates Court,2018,Pending,1150,
+Magistrates Court,2018,PDR,0.64,
+Magistrates Court,2018,PendingAge,19,days
+Magistrates Court,2018,TimelinessCriminal,125,days
+Magistrates Court,2018,TimelinessCivil,250,days
+Magistrates Court,2018,AttendanceCriminal,3.1,%
+Magistrates Court,2018,AttendanceCivil,5.7,%
+Magistrates Court,2018,AttendanceEnforcement,9,%
+Magistrates Court,2018,Productivity,275,
+Magistrates Court,2018,ReservedJudgments,19,
+Island Court,2018,Filings,450,
+Island Court,2018,Disposals,460,
+Island Court,2018,ClearanceRate,102,%
+Island Court,2018,Pending,570,
+Island Court,2018,PDR,1.5,
+Island Court,2018,PendingAge,52,days
+Island Court,2018,TimelinessCriminal,300,days
+Island Court,2018,TimelinessCivil,400,days
+Supreme Court,2018,Gender_Male,65,%
+Supreme Court,2018,Gender_Female,35,%
+Magistrates Court,2018,Gender_Male,69,%
+Magistrates Court,2018,Gender_Female,31,%
+Court of Appeal,2018,Civil_Guilty,25,%
+Court of Appeal,2018,Civil_NotGuilty,0,%
+Court of Appeal,2018,Civil_Withdrawn,15,%
+Court of Appeal,2018,Civil_Committed,0,%
+Court of Appeal,2018,Civil_Dismissed,60,%
+Supreme Court,2018,Criminal_Guilty,84,%
+Supreme Court,2018,Criminal_NotGuilty,8,%
+Supreme Court,2018,Criminal_Withdrawn,8,%
+Supreme Court,2018,Criminal_Committed,0,%
+Supreme Court,2018,Criminal_Dismissed,0,%
+Magistrates Court,2018,Criminal_Guilty,66,%
+Magistrates Court,2018,Criminal_NotGuilty,1,%
+Magistrates Court,2018,Criminal_Withdrawn,26,%
+Magistrates Court,2018,Criminal_Committed,0,%
+Magistrates Court,2018,Criminal_Dismissed,7,%
+Magistrates Court,2018,PI_Guilty,0,%
+Magistrates Court,2018,PI_NotGuilty,0,%
+Magistrates Court,2018,PI_Withdrawn,20,%
+Magistrates Court,2018,PI_Committed,76,%
+Magistrates Court,2018,PI_Dismissed,4,%

@@ -1,0 +1,68 @@
+Court,Year,Metric,Value,Unit
+Court of Appeal,2020,Filings,76,
+Court of Appeal,2020,Disposals,73,
+Court of Appeal,2020,ClearanceRate,96,%
+Court of Appeal,2020,Pending,27,
+Court of Appeal,2020,PDR,0.34,
+Court of Appeal,2020,PendingAge,0,days
+Court of Appeal,2020,TimelinessCriminal,100,days
+Court of Appeal,2020,TimelinessCivil,150,days
+Court of Appeal,2020,ReservedJudgments,0,
+Supreme Court,2020,Filings,780,
+Supreme Court,2020,Disposals,770,
+Supreme Court,2020,ClearanceRate,99,%
+Supreme Court,2020,Pending,880,
+Supreme Court,2020,PDR,1.05,
+Supreme Court,2020,PendingAge,21,days
+Supreme Court,2020,TimelinessCriminal,185,days
+Supreme Court,2020,TimelinessCivil,460,days
+Supreme Court,2020,AttendanceCriminal,4,%
+Supreme Court,2020,AttendanceCivil,5.5,%
+Supreme Court,2020,AttendanceEnforcement,8,%
+Supreme Court,2020,Productivity,108,
+Supreme Court,2020,ReservedJudgments,56,
+Magistrates Court,2020,Filings,1900,
+Magistrates Court,2020,Disposals,1850,
+Magistrates Court,2020,ClearanceRate,97,%
+Magistrates Court,2020,Pending,1200,
+Magistrates Court,2020,PDR,0.65,
+Magistrates Court,2020,PendingAge,20,days
+Magistrates Court,2020,TimelinessCriminal,130,days
+Magistrates Court,2020,TimelinessCivil,260,days
+Magistrates Court,2020,AttendanceCriminal,3.1,%
+Magistrates Court,2020,AttendanceCivil,5.7,%
+Magistrates Court,2020,AttendanceEnforcement,9,%
+Magistrates Court,2020,Productivity,280,
+Magistrates Court,2020,ReservedJudgments,18,
+Island Court,2020,Filings,440,
+Island Court,2020,Disposals,450,
+Island Court,2020,ClearanceRate,102,%
+Island Court,2020,Pending,590,
+Island Court,2020,PDR,1.55,
+Island Court,2020,PendingAge,54,days
+Island Court,2020,TimelinessCriminal,320,days
+Island Court,2020,TimelinessCivil,420,days
+Supreme Court,2020,Gender_Male,64,%
+Supreme Court,2020,Gender_Female,36,%
+Magistrates Court,2020,Gender_Male,68,%
+Magistrates Court,2020,Gender_Female,32,%
+Court of Appeal,2020,Civil_Guilty,26,%
+Court of Appeal,2020,Civil_NotGuilty,0,%
+Court of Appeal,2020,Civil_Withdrawn,14,%
+Court of Appeal,2020,Civil_Committed,0,%
+Court of Appeal,2020,Civil_Dismissed,60,%
+Supreme Court,2020,Criminal_Guilty,85,%
+Supreme Court,2020,Criminal_NotGuilty,7,%
+Supreme Court,2020,Criminal_Withdrawn,8,%
+Supreme Court,2020,Criminal_Committed,0,%
+Supreme Court,2020,Criminal_Dismissed,0,%
+Magistrates Court,2020,Criminal_Guilty,67,%
+Magistrates Court,2020,Criminal_NotGuilty,1,%
+Magistrates Court,2020,Criminal_Withdrawn,25,%
+Magistrates Court,2020,Criminal_Committed,0,%
+Magistrates Court,2020,Criminal_Dismissed,7,%
+Magistrates Court,2020,PI_Guilty,0,%
+Magistrates Court,2020,PI_NotGuilty,0,%
+Magistrates Court,2020,PI_Withdrawn,19,%
+Magistrates Court,2020,PI_Committed,77,%
+Magistrates Court,2020,PI_Dismissed,4,%
