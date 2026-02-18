@@ -6,7 +6,7 @@ import { FileText, ArrowLeft } from 'lucide-react'
 interface Report {
   year: number
   title: string
-  file: string
+  url: string
 }
 
 export function AnnualReportsPage() {
@@ -35,7 +35,7 @@ export function AnnualReportsPage() {
           Annual Reports
         </h1>
         <p className="mb-6 text-muted-foreground">
-          PDF reports from the Vanuatu Judiciary. Add files to <code className="rounded bg-muted px-1">public/annual-reports/</code> and update <code className="rounded bg-muted px-1">reports.json</code>.
+          Annual reports and statistics from the Vanuatu Judiciary (courts.gov.vu).
         </p>
 
         {loading ? (
@@ -49,10 +49,7 @@ export function AnnualReportsPage() {
             </CardHeader>
             <CardContent>
               <p className="text-muted-foreground">
-                Place PDF files in <code className="rounded bg-muted px-1">public/annual-reports/</code> and edit <code className="rounded bg-muted px-1">public/annual-reports/reports.json</code> to list them.
-              </p>
-              <p className="mt-4 text-sm text-muted-foreground">
-                Example: Add <code className="rounded bg-muted px-1">2024.pdf</code> and include <code className="rounded bg-muted px-1">{`{"year": 2024, "title": "Annual Statistics 2024", "file": "2024.pdf"}`}</code> in the manifest.
+                No reports configured. Add entries to <code className="rounded bg-muted px-1">public/annual-reports/reports.json</code> with <code className="rounded bg-muted px-1">url</code> pointing to courts.gov.vu.
               </p>
             </CardContent>
           </Card>
@@ -70,7 +67,7 @@ export function AnnualReportsPage() {
                 </CardHeader>
                 <CardContent>
                   <a
-                    href={`${import.meta.env.BASE_URL}annual-reports/${encodeURIComponent(r.file)}`}
+                    href={r.url}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 rounded-lg bg-[#422AFB] px-4 py-2 text-sm font-medium text-white hover:bg-[#7551ff]"
