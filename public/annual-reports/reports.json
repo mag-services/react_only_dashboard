@@ -1,8 +1,11 @@
 [
-  { "year": 2018, "title": "Annual Statistics 2018", "file": "2018.pdf" },
-  { "year": 2020, "title": "Annual Statistics 2020", "file": "2020.pdf" },
-  { "year": 2021, "title": "Annual Statistics 2021", "file": "2021.pdf" },
-  { "year": 2022, "title": "Annual Statistics 2022", "file": "2022.pdf" },
-  { "year": 2023, "title": "Annual Statistics 2023", "file": "2023.pdf" },
-  { "year": 2024, "title": "Annual Statistics 2024", "file": "2024.pdf" }
+  { "year": 2016, "title": "Annual Statistics 2016", "file": "2016 Annual Statistics.pdf" },
+  { "year": 2017, "title": "Annual Statistics 2017", "file": "2017 Annual Statistics.pdf" },
+  { "year": 2018, "title": "Annual Statistics 2018", "file": "2018 Annual Statistics.pdf" },
+  { "year": 2019, "title": "Annual Statistics 2019", "file": "2019 Annual Statistics.pdf" },
+  { "year": 2020, "title": "Annual Report 2020", "file": "2020 Annual Report.pdf" },
+  { "year": 2021, "title": "Annual Statistics 2021", "file": "2021AnnualStatistics.pdf" },
+  { "year": 2022, "title": "Annual Statistics 2022", "file": "2022AnnualStatistics.pdf" },
+  { "year": 2023, "title": "Annual Statistics 2023", "file": "2023AnnualStatistics.pdf" },
+  { "year": 2024, "title": "Annual Statistics 2024", "file": "2024 Annual Statistics.pdf" }
 ]
