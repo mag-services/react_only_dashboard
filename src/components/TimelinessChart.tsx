@@ -35,7 +35,14 @@ export function TimelinessChart({ data, selectedYears, getValue }: Props) {
       labels: { rotation: -45, style: { fontSize: '10px' } },
       crosshair: true,
     },
-    yAxis: { title: { text: 'Days' }, gridLineDashStyle: 'Dot' },
+    yAxis: {
+      title: { text: 'Days' },
+      gridLineDashStyle: 'Dot',
+      plotLines: [
+        { value: 180, color: '#422AFB', dashStyle: 'Dash', width: 2, zIndex: 5, label: { text: 'Criminal target (180d)', align: 'right', style: { fontSize: '10px' } } },
+        { value: 365, color: '#7551ff', dashStyle: 'Dash', width: 2, zIndex: 5, label: { text: 'Civil target (365d)', align: 'right', style: { fontSize: '10px' } } },
+      ],
+    },
     plotOptions: { column: { borderWidth: 0 } },
     series,
     legend: { enabled: true },

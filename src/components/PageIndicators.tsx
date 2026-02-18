@@ -74,8 +74,8 @@ export function PageIndicators({ data, activeTab }: PageIndicatorsProps) {
       { label: 'DV Filings', value: dvFilings.toLocaleString(), icon: FileText, color: '#4318FF' },
     ],
     3: [
-      { label: 'Avg Timeliness (Criminal) days', value: avgTimelinessCrim.toFixed(0), icon: Clock, color: '#422AFB' },
-      { label: 'Avg Timeliness (Civil) days', value: avgTimelinessCivil.toFixed(0), icon: Clock, color: '#7551ff' },
+      { label: 'Avg Timeliness (Criminal) — target 180 days', value: `${avgTimelinessCrim.toFixed(0)} days`, icon: Clock, color: '#422AFB' },
+      { label: 'Avg Timeliness (Civil) — target 365 days', value: `${avgTimelinessCivil.toFixed(0)} days`, icon: Clock, color: '#7551ff' },
       { label: 'Avg Attendance (%)', value: `${avgAttendance.toFixed(1)}%`, icon: Users, color: '#6B7FFF' },
       { label: 'Avg Productivity', value: avgProductivity.toFixed(0), icon: TrendingUp, color: '#4318FF' },
     ],
