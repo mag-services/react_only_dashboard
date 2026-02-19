@@ -6,7 +6,6 @@ import {
   TrendingUp,
   Scale,
   Layers,
-  BookOpen,
   ClipboardList,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
@@ -14,16 +13,16 @@ import { CourtsFilterDropdown } from '@/components/CourtsFilterDropdown'
 import { Slider } from '@/components/ui/slider'
 import { Separator } from '@/components/ui/separator'
 
-const ROUTES = [
+const DATA_ROUTES = [
   { name: 'Overview', icon: BarChart2 },
   { name: 'Pending Cases', icon: FileText },
   { name: 'Workload', icon: Layers },
   { name: 'Performance', icon: TrendingUp },
   { name: 'Outcomes', icon: PieChart },
   { name: 'Other Metrics', icon: Users },
-  { name: 'Glossary', icon: BookOpen },
-  { name: 'Methodology', icon: ClipboardList },
 ] as const
+
+const METHODOLOGY_ROUTE = { name: 'Methodology', icon: ClipboardList } as const
 
 function formatLastUpdated(iso: string | null): string {
   if (!iso) return ''
@@ -72,7 +71,7 @@ export function AppSidebar({ activeTab, onTabChange, years, selectedYears, onYea
         </span>
       </div>
       <nav className="flex-1 space-y-0.5 overflow-y-auto p-4">
-        {ROUTES.map((route, i) => (
+        {DATA_ROUTES.map((route, i) => (
           <button
             key={route.name}
             onClick={() => onTabChange(i)}
@@ -87,6 +86,19 @@ export function AppSidebar({ activeTab, onTabChange, years, selectedYears, onYea
             {route.name}
           </button>
         ))}
+        <Separator className="my-5" />
+        <button
+          onClick={() => onTabChange(DATA_ROUTES.length)}
+          className={cn(
+            'flex w-full items-center gap-3 rounded-xl px-3 py-3 text-sm font-medium transition-all',
+            activeTab === DATA_ROUTES.length
+              ? 'bg-[#7551ff]/10 text-[#422AFB]'
+              : 'text-foreground/70 hover:bg-muted/80 hover:text-foreground'
+          )}
+        >
+          <METHODOLOGY_ROUTE.icon className="size-5 shrink-0" strokeWidth={1.5} />
+          {METHODOLOGY_ROUTE.name}
+        </button>
         <Separator className="my-5" />
         <div className="space-y-3">
           <p className="px-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">Courts</p>

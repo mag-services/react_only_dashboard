@@ -1,3 +1,4 @@
+import { memo } from 'react'
 import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -11,7 +12,7 @@ interface Props {
   getValue: (court: string, metric: string, year?: number) => number | null
 }
 
-export function GenderBreakdownChart({ data, selectedYears, getValue }: Props) {
+export const GenderBreakdownChart = memo(function GenderBreakdownChart({ data, selectedYears, getValue }: Props) {
   const courts = sortCourtsByOrder([...new Set(data.filter((r) => r.Metric === 'Gender_Male').map((r) => r.Court))])
   const sortedYears = [...selectedYears].sort((a, b) => a - b)
 
@@ -71,4 +72,4 @@ export function GenderBreakdownChart({ data, selectedYears, getValue }: Props) {
       </CardContent>
     </Card>
   )
-}
+})

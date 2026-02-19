@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { memo, useMemo } from 'react'
 import type { ColumnDef } from '@tanstack/react-table'
 import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
@@ -30,7 +30,7 @@ const BAR_COLORS: Record<string, string> = {
   PI_Guilty: '#818cf8', PI_NotGuilty: '#60a5fa', PI_Withdrawn: '#38bdf8', PI_Committed: '#22d3ee', PI_Dismissed: '#a5f3fc',
 }
 
-export function CaseOutcomesTable({ getRowsByMetric, selectedYears }: Props) {
+const CaseOutcomesTableInner = function CaseOutcomesTable({ getRowsByMetric, selectedYears }: Props) {
   const outcomeRows = OUTCOME_METRICS.flatMap((m) => getRowsByMetric(m))
   const sortedYears = [...selectedYears].sort((a, b) => a - b)
 
@@ -126,3 +126,5 @@ export function CaseOutcomesTable({ getRowsByMetric, selectedYears }: Props) {
     </Card>
   )
 }
+
+export const CaseOutcomesTable = memo(CaseOutcomesTableInner)

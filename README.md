@@ -4,22 +4,27 @@ A static, client-side React dashboard for Vanuatu Judiciary annual reports stati
 
 ## Features
 
-- **Court filter** – Filter by Court of Appeal, Supreme Court, Magistrates Court, Island Court
-- **Year filter** – Multi-select years (2018, 2020–2024)
-- **Page-specific indicators** – Four KPI cards per page
-- **Annual Reports** – PDF links at `/annual-reports`
+- **Court filter** – Multi-select dropdown (Court of Appeal, Supreme Court, Magistrates Court, Island Court)
+- **Year filter** – Slider to select year range (2018, 2020–2024)
+- **Page-specific KPI indicators** – Four cards per data page
+- **Court color consistency** – Each court has a distinct color across all charts (e.g. Supreme = dark blue, Magistrates = teal)
+- **Chart units** – Tooltips and axes show units (cases, days, %, etc.)
+- **Methodology** – PDF links, extraction notes, assumptions, and glossary in one section
 - **Responsive layout** – Grid adapts to number of charts per page (2–3 columns)
+- **Performance** – Lazy-loading charts when 4+ years selected; memoization for smoother interaction
 
 ## Dashboard Sections
 
 | Page | Contents |
 |------|----------|
-| **Overview** | Clearance rates, Filings & Disposals |
-| **Pending Cases** | Pending & PDR, Pending by type, Pending age, Pending listed status, Reserved judgments |
-| **Workload** | Case workload by type, Location workload, DV filings |
-| **Performance** | Timeliness, Attendance, Productivity |
+| **Overview** | KPI cards with sparklines (pending, clearance, filings, disposals, DV trend, gender, etc.) |
+| **Pending Cases** | Pending & PDR table/chart, Pending by type, Pending age, Pending listed status, Reserved judgments |
+| **Workload** | Case workload by type, Location workload by province, DV filings |
+| **Performance** | Timeliness (Criminal/Civil days), Attendance rates, Productivity |
 | **Outcomes** | Case outcomes, Court of Appeal outcomes *(Island Court has no outcome data)* |
 | **Other Metrics** | Charge orders, Gender breakdown |
+| — | *separator* |
+| **Methodology** | PDFs used, extraction notes (LLM-based), methodology & assumptions, glossary |
 
 ## Setup
 
@@ -80,13 +85,12 @@ Supreme Court,2024,ClearanceRate,93,%
 
 ## Annual Reports (PDFs)
 
-- Place PDFs in `public/annual-reports/`
-- Edit `public/annual-reports/reports.json` to list them:
+PDF links are configured in `public/annual-reports/reports.json` and shown in the **Methodology** section. Reports point to Vanuatu Courts (courts.gov.vu):
 
 ```json
 [
-  {"year": 2024, "title": "Annual Statistics 2024", "file": "2024.pdf"}
+  {"year": 2024, "title": "Annual Statistics 2024", "url": "https://courts.gov.vu/..."}
 ]
 ```
 
-- Access at `/annual-reports`
+For local PDFs, use `"file": "2024.pdf"` and place files in `public/annual-reports/`.

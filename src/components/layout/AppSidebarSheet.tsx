@@ -6,16 +6,16 @@ import { CourtsFilterDropdown } from '@/components/CourtsFilterDropdown'
 import { Slider } from '@/components/ui/slider'
 import { Separator } from '@/components/ui/separator'
 
-const ROUTES = [
+const DATA_ROUTES = [
   'Overview',
   'Pending Cases',
   'Workload',
   'Performance',
   'Outcomes',
   'Other Metrics',
-  'Glossary',
-  'Methodology',
 ] as const
+
+const METHODOLOGY_ROUTE = 'Methodology' as const
 
 function formatLastUpdated(iso: string | null): string {
   if (!iso) return ''
@@ -95,7 +95,7 @@ export function AppSidebarSheet({
             </span>
           </div>
           <nav className="flex-1 space-y-0.5 overflow-y-auto p-4">
-            {ROUTES.map((name, i) => (
+            {DATA_ROUTES.map((name, i) => (
               <button
                 key={name}
                 onClick={() => handleSelect(i)}
@@ -106,6 +106,15 @@ export function AppSidebarSheet({
                 {name}
               </button>
             ))}
+            <Separator className="my-5" />
+            <button
+              onClick={() => handleSelect(DATA_ROUTES.length)}
+              className={`block w-full rounded-xl px-3 py-3 text-left text-sm font-medium transition-all ${
+                activeTab === DATA_ROUTES.length ? 'bg-[#7551ff]/10 text-[#422AFB]' : 'hover:bg-muted/80'
+              }`}
+            >
+              {METHODOLOGY_ROUTE}
+            </button>
             <Separator className="my-5" />
             <div className="space-y-3">
               <p className="px-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">Courts</p>

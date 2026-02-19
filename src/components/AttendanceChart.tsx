@@ -1,3 +1,4 @@
+import { memo } from 'react'
 import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -13,7 +14,7 @@ interface Props {
   getValue: (court: string, metric: string, year?: number) => number | null
 }
 
-export function AttendanceChart({ data, selectedYears, getValue }: Props) {
+export const AttendanceChart = memo(function AttendanceChart({ data, selectedYears, getValue }: Props) {
   const courts = sortCourtsByOrder([...new Set(data.filter((r) => (ATTENDANCE_METRICS as readonly string[]).includes(r.Metric)).map((r) => r.Court))])
   const sortedYears = [...selectedYears].sort((a, b) => a - b)
 
@@ -95,4 +96,4 @@ export function AttendanceChart({ data, selectedYears, getValue }: Props) {
       </CardContent>
     </Card>
   )
-}
+})

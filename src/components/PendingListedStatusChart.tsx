@@ -1,3 +1,4 @@
+import { memo } from 'react'
 import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -15,7 +16,7 @@ interface Props {
   getValue: (court: string, metric: string, year?: number) => number | null
 }
 
-export function PendingListedStatusChart({ data, selectedYears, getValue }: Props) {
+export const PendingListedStatusChart = memo(function PendingListedStatusChart({ data, selectedYears, getValue }: Props) {
   const courts = [...new Set(data.filter((r) => r.Metric === 'Pending_WithFutureListing').map((r) => r.Court))]
   const sortedYears = [...selectedYears].sort((a, b) => a - b)
 
@@ -85,4 +86,4 @@ export function PendingListedStatusChart({ data, selectedYears, getValue }: Prop
       </CardContent>
     </Card>
   )
-}
+})

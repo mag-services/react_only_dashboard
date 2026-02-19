@@ -1,3 +1,4 @@
+import { memo } from 'react'
 import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -11,7 +12,7 @@ interface Props {
   getValue: (court: string, metric: string, year?: number) => number | null
 }
 
-export function TimelinessChart({ data, selectedYears, getValue }: Props) {
+export const TimelinessChart = memo(function TimelinessChart({ data, selectedYears, getValue }: Props) {
   const courts = sortCourtsByOrder([...new Set(data.filter((r) => r.Metric === 'TimelinessCriminal').map((r) => r.Court))])
   const sortedYears = [...selectedYears].sort((a, b) => a - b)
 
@@ -58,7 +59,7 @@ export function TimelinessChart({ data, selectedYears, getValue }: Props) {
     plotOptions: { column: { borderWidth: 0 } },
     series,
     legend: { enabled: true },
-    tooltip: { shared: true },
+    tooltip: { shared: true, valueSuffix: ' days' },
     credits: { enabled: false },
   }
 
@@ -77,4 +78,4 @@ export function TimelinessChart({ data, selectedYears, getValue }: Props) {
       </CardContent>
     </Card>
   )
-}
+})

@@ -1,3 +1,4 @@
+import { memo } from 'react'
 import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -18,7 +19,7 @@ interface Props {
   getValue: (court: string, metric: string, year?: number) => number | null
 }
 
-export function CoAOutcomesChart({ data, selectedYears, getValue }: Props) {
+export const CoAOutcomesChart = memo(function CoAOutcomesChart({ data, selectedYears, getValue }: Props) {
   const court = 'Court of Appeal'
   const sortedYears = [...selectedYears].sort((a, b) => a - b)
 
@@ -82,4 +83,4 @@ export function CoAOutcomesChart({ data, selectedYears, getValue }: Props) {
       </CardContent>
     </Card>
   )
-}
+})

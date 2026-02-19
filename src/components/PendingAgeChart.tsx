@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { memo, useMemo } from 'react'
 import type { ColumnDef } from '@tanstack/react-table'
 import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
@@ -21,7 +21,7 @@ interface Props {
   getValue: (court: string, metric: string, year?: number) => number | null
 }
 
-export function PendingAgeChart({ data, selectedYears, getValue }: Props) {
+export const PendingAgeChart = memo(function PendingAgeChart({ data, selectedYears, getValue }: Props) {
   const courts = sortCourtsByOrder([...new Set(data.filter((r) => r.Metric === 'PendingAge').map((r) => r.Court))])
   const sortedYears = [...selectedYears].sort((a, b) => a - b)
 
@@ -106,4 +106,4 @@ export function PendingAgeChart({ data, selectedYears, getValue }: Props) {
       </CardContent>
     </Card>
   )
-}
+})

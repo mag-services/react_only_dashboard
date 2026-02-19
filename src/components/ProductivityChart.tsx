@@ -1,3 +1,4 @@
+import { memo } from 'react'
 import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -11,7 +12,7 @@ interface Props {
   getValue: (court: string, metric: string, year?: number) => number | null
 }
 
-export function ProductivityChart({ data, selectedYears, getValue }: Props) {
+function ProductivityChartInner({ data, selectedYears, getValue }: Props) {
   const courts = sortCourtsByOrder([...new Set(data.filter((r) => r.Metric === 'Productivity').map((r) => r.Court))])
   const sortedYears = [...selectedYears].sort((a, b) => a - b)
 
@@ -42,7 +43,7 @@ export function ProductivityChart({ data, selectedYears, getValue }: Props) {
     yAxis: { title: { text: 'Cases per judge' }, min: 0, gridLineDashStyle: 'Dot' },
     series,
     legend: { enabled: true },
-    tooltip: { shared: true },
+    tooltip: { shared: true, valueSuffix: ' cases' },
     credits: { enabled: false },
   }
 
@@ -62,3 +63,5 @@ export function ProductivityChart({ data, selectedYears, getValue }: Props) {
     </Card>
   )
 }
+
+export const ProductivityChart = memo(ProductivityChartInner)
