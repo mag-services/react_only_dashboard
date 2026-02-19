@@ -1,6 +1,8 @@
 import { CaseWorkloadByTypeChart } from '../components/CaseWorkloadByTypeChart'
 import { LocationWorkloadChart } from '../components/LocationWorkloadChart'
 import { DVFilingsChart } from '../components/DVFilingsChart'
+import { LazyChart } from '../components/LazyChart'
+import { MANY_YEARS_THRESHOLD } from '@/lib/constants'
 import type { StatRow } from '../types'
 
 interface Props {
@@ -10,11 +12,18 @@ interface Props {
 }
 
 export function WorkloadPage({ data, selectedYears, getValue }: Props) {
+  const lazy = selectedYears.length >= MANY_YEARS_THRESHOLD
   return (
     <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-      <CaseWorkloadByTypeChart data={data} selectedYears={selectedYears} getValue={getValue} />
-      <LocationWorkloadChart data={data} selectedYears={selectedYears} getValue={getValue} />
-      <DVFilingsChart data={data} selectedYears={selectedYears} getValue={getValue} />
+      <LazyChart enabled={lazy}>
+        <CaseWorkloadByTypeChart data={data} selectedYears={selectedYears} getValue={getValue} />
+      </LazyChart>
+      <LazyChart enabled={lazy}>
+        <LocationWorkloadChart data={data} selectedYears={selectedYears} getValue={getValue} />
+      </LazyChart>
+      <LazyChart enabled={lazy}>
+        <DVFilingsChart data={data} selectedYears={selectedYears} getValue={getValue} />
+      </LazyChart>
     </div>
   )
 }

@@ -1,3 +1,4 @@
+import { memo } from 'react'
 import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -11,7 +12,7 @@ interface Props {
   getValue: (court: string, metric: string, year?: number) => number | null
 }
 
-export function DVFilingsChart({ data, selectedYears, getValue }: Props) {
+function DVFilingsChartInner({ data, selectedYears, getValue }: Props) {
   const courts = sortCourtsByOrder([...new Set(data.filter((r) => r.Metric === 'DV_Filings').map((r) => r.Court))])
   const sortedYears = [...selectedYears].sort((a, b) => a - b)
 
@@ -38,10 +39,10 @@ export function DVFilingsChart({ data, selectedYears, getValue }: Props) {
   const options: Highcharts.Options = {
     chart: { type: 'line', height: 400 },
     xAxis: { categories: sortedYears.map(String), crosshair: true },
-    yAxis: { gridLineDashStyle: 'Dot' },
+    yAxis: { title: { text: 'Cases' }, gridLineDashStyle: 'Dot' },
     series,
     legend: { enabled: true },
-    tooltip: { shared: true },
+    tooltip: { shared: true, valueSuffix: ' cases' },
     credits: { enabled: false },
   }
 
@@ -62,3 +63,5 @@ export function DVFilingsChart({ data, selectedYears, getValue }: Props) {
     </Card>
   )
 }
+
+export const DVFilingsChart = memo(DVFilingsChartInner)

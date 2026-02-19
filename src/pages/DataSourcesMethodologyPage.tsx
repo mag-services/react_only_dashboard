@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { FileText, ExternalLink, Database } from 'lucide-react'
+import { FileText, ExternalLink, Database, BookOpen } from 'lucide-react'
+import { GLOSSARY } from '@/glossary'
 
 interface Report {
   year: number
@@ -180,6 +181,31 @@ export function DataSourcesMethodologyPage({ embedded }: DataSourcesMethodologyP
                 </li>
               ))}
             </ul>
+          </CardContent>
+        </Card>
+
+        {/* Glossary */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <BookOpen className="size-5" />
+              Glossary
+            </CardTitle>
+            <p className="text-sm text-muted-foreground">
+              Plain-language definitions of terms used in the dashboard.
+            </p>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              {Object.keys(GLOSSARY)
+                .sort()
+                .map((term) => (
+                  <div key={term} className="border-b border-border pb-4 last:border-0 last:pb-0">
+                    <p className="font-medium text-foreground">{term}</p>
+                    <p className="mt-1 text-sm text-muted-foreground">{GLOSSARY[term]}</p>
+                  </div>
+                ))}
+            </div>
           </CardContent>
         </Card>
       </div>

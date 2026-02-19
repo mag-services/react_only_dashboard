@@ -11,7 +11,6 @@ import { WorkloadPage } from './pages/WorkloadPage'
 import { PerformancePage } from './pages/PerformancePage'
 import { OutcomesPage } from './pages/OutcomesPage'
 import { OtherMetricsPage } from './pages/OtherMetricsPage'
-import { GlossaryPage } from './pages/GlossaryPage'
 import { DataSourcesMethodologyPage } from './pages/DataSourcesMethodologyPage'
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -24,7 +23,6 @@ const SECTION_NAMES = [
   'Performance',
   'Outcomes',
   'Other Metrics',
-  'Glossary',
   'Methodology',
 ] as const
 
@@ -234,10 +232,9 @@ export default function App() {
               </div>
             </>
           )}
-          {(activeTab === 6 || activeTab === 7) && (
+          {activeTab === 6 && (
             <div className="grid gap-6 xl:grid-cols-1">
-              {activeTab === 6 && <GlossaryPage embedded />}
-              {activeTab === 7 && <DataSourcesMethodologyPage embedded />}
+              <DataSourcesMethodologyPage embedded />
             </div>
           )}
         </main>

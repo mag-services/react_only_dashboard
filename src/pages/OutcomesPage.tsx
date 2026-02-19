@@ -1,7 +1,9 @@
 import { CaseOutcomesTable } from '../components/CaseOutcomesTable'
 import { CoAOutcomesChart } from '../components/CoAOutcomesChart'
+import { LazyChart } from '../components/LazyChart'
 import { Card, CardContent } from '@/components/ui/card'
 import { Info } from 'lucide-react'
+import { MANY_YEARS_THRESHOLD } from '@/lib/constants'
 import type { StatRow } from '../types'
 
 const COURTS_WITHOUT_OUTCOMES = ['Island Court']
@@ -14,6 +16,7 @@ interface Props {
 }
 
 export function OutcomesPage({ data, selectedYears, getValue, getRowsByMetric }: Props) {
+  const lazy = selectedYears.length >= MANY_YEARS_THRESHOLD
   return (
     <div className="space-y-6">
       <Card className="border-amber-200 bg-amber-50/80">
@@ -25,8 +28,12 @@ export function OutcomesPage({ data, selectedYears, getValue, getRowsByMetric }:
         </CardContent>
       </Card>
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-      <CaseOutcomesTable getRowsByMetric={getRowsByMetric} selectedYears={selectedYears} />
-      <CoAOutcomesChart data={data} selectedYears={selectedYears} getValue={getValue} />
+        <LazyChart enabled={lazy}>
+          <CaseOutcomesTable getRowsByMetric={getRowsByMetric} selectedYears={selectedYears} />
+        </LazyChart>
+        <LazyChart enabled={lazy}>
+          <CoAOutcomesChart data={data} selectedYears={selectedYears} getValue={getValue} />
+        </LazyChart>
       </div>
     </div>
   )

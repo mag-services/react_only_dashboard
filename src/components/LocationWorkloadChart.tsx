@@ -1,3 +1,4 @@
+import { memo } from 'react'
 import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -15,7 +16,7 @@ interface Props {
   getValue: (court: string, metric: string, year?: number) => number | null
 }
 
-export function LocationWorkloadChart({ data, selectedYears, getValue }: Props) {
+export const LocationWorkloadChart = memo(function LocationWorkloadChart({ data, selectedYears, getValue }: Props) {
   const courts = [...new Set(data.filter((r) => r.Metric.startsWith('Location_')).map((r) => r.Court))]
   const sortedYears = [...selectedYears].sort((a, b) => a - b)
 
@@ -62,11 +63,11 @@ export function LocationWorkloadChart({ data, selectedYears, getValue }: Props) 
       labels: { rotation: -45, style: { fontSize: '10px' } },
       crosshair: true,
     },
-    yAxis: { gridLineDashStyle: 'Dot' },
+    yAxis: { title: { text: 'Filings' }, gridLineDashStyle: 'Dot' },
     plotOptions: { column: { borderWidth: 0, stacking: 'normal' } },
     series,
     legend: { enabled: true },
-    tooltip: { shared: true },
+    tooltip: { shared: true, valueSuffix: ' filings' },
     credits: { enabled: false },
   }
 
@@ -83,4 +84,4 @@ export function LocationWorkloadChart({ data, selectedYears, getValue }: Props) 
       </CardContent>
     </Card>
   )
-}
+})

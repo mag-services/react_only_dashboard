@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { memo, useMemo } from 'react'
 import type { ColumnDef } from '@tanstack/react-table'
 import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
@@ -20,7 +20,7 @@ interface Props {
   selectedYears: number[]
 }
 
-export function PendingCasesTable({ getRowsByMetric, selectedYears }: Props) {
+const PendingCasesTableInner = function PendingCasesTable({ getRowsByMetric, selectedYears }: Props) {
   const pendingRows = getRowsByMetric('Pending')
   const pdrRows = getRowsByMetric('PDR')
 
@@ -112,3 +112,5 @@ export function PendingCasesTable({ getRowsByMetric, selectedYears }: Props) {
     </Card>
   )
 }
+
+export const PendingCasesTable = memo(PendingCasesTableInner)

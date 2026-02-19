@@ -1,3 +1,4 @@
+import { useMemo } from 'react'
 import { Clock, Scale, TrendingUp, FileText, Users, Layers } from 'lucide-react'
 import { Sparkline } from '../components/Sparkline'
 import type { StatRow } from '../types'
@@ -26,55 +27,59 @@ const CARD_COLORS = {
 } as const
 
 export function OverviewPage({ data, selectedYears, getValue }: Props) {
-  const sortedYears = [...selectedYears].sort((a, b) => a - b)
-  const courts = [...new Set(data.map((r) => r.Court))]
+  const sortedYears = useMemo(() => [...selectedYears].sort((a, b) => a - b), [selectedYears])
+  const courts = useMemo(() => [...new Set(data.map((r) => r.Court))], [data])
 
   // Total Pending + sparkline data
-  const pendingByYear = sortedYears.map(
+  const pendingByYear = useMemo(() => sortedYears.map(
     (y) => data.filter((r) => r.Metric === 'Pending' && r.Year === String(y)).reduce((s, r) => s + parseVal(r.Value), 0)
-  )
+  ), [sortedYears, data])
   const totalPending = pendingByYear.length > 0 ? pendingByYear[pendingByYear.length - 1] : 0
 
   // Clearance Rate trend (avg per year)
-  const clearanceByYear = sortedYears.map((y) => {
+  const clearanceByYear = useMemo(() => sortedYears.map((y) => {
     const rows = data.filter((r) => r.Metric === 'ClearanceRate' && r.Year === String(y))
     return rows.length > 0 ? rows.reduce((s, r) => s + parseVal(r.Value), 0) / rows.length : 0
-  })
+  }), [sortedYears, data])
   const avgClearance = clearanceByYear.length > 0 ? clearanceByYear.reduce((a, b) => a + b, 0) / clearanceByYear.length : 0
 
   // Top 3 Backlog Courts (by latest year's pending)
   const latestYear = sortedYears[sortedYears.length - 1] ?? sortedYears[0]
-  const pendingByCourt = courts
+  const pendingByCourt = useMemo(() => courts
     .map((court) => ({
       court,
       pending: getValue(court, 'Pending', latestYear) ?? data.filter((r) => r.Court === court && r.Metric === 'Pending' && r.Year === String(latestYear)).reduce((s, r) => s + parseVal(r.Value), 0),
     }))
     .filter((x) => x.pending > 0)
     .sort((a, b) => b.pending - a.pending)
-    .slice(0, 3)
+    .slice(0, 3), [courts, latestYear, getValue, data])
 
   // DV Trend
-  const dvByYear = sortedYears.map(
+  const dvByYear = useMemo(() => sortedYears.map(
     (y) => data.filter((r) => r.Metric === 'DV_Filings' && r.Year === String(y)).reduce((s, r) => s + parseVal(r.Value), 0)
-  )
+  ), [sortedYears, data])
   const totalDV = dvByYear.reduce((a, b) => a + b, 0)
 
   // Gender Avg
-  const maleRows = data.filter((r) => r.Metric === 'Gender_Male')
-  const femaleRows = data.filter((r) => r.Metric === 'Gender_Female')
-  const avgMale = maleRows.length > 0 ? maleRows.reduce((s, r) => s + parseVal(r.Value), 0) / maleRows.length : 0
-  const avgFemale = femaleRows.length > 0 ? femaleRows.reduce((s, r) => s + parseVal(r.Value), 0) / femaleRows.length : 0
+  const avgMale = useMemo(() => {
+    const rows = data.filter((r) => r.Metric === 'Gender_Male')
+    return rows.length > 0 ? rows.reduce((s, r) => s + parseVal(r.Value), 0) / rows.length : 0
+  }, [data])
+  const avgFemale = useMemo(() => {
+    const rows = data.filter((r) => r.Metric === 'Gender_Female')
+    return rows.length > 0 ? rows.reduce((s, r) => s + parseVal(r.Value), 0) / rows.length : 0
+  }, [data])
 
   // Total Filings + sparkline
-  const filingsByYear = sortedYears.map(
+  const filingsByYear = useMemo(() => sortedYears.map(
     (y) => data.filter((r) => r.Metric === 'Filings' && r.Year === String(y)).reduce((s, r) => s + parseVal(r.Value), 0)
-  )
+  ), [sortedYears, data])
   const totalFilings = filingsByYear.reduce((a, b) => a + b, 0)
 
   // Total Disposals + sparkline
-  const disposalsByYear = sortedYears.map(
+  const disposalsByYear = useMemo(() => sortedYears.map(
     (y) => data.filter((r) => r.Metric === 'Disposals' && r.Year === String(y)).reduce((s, r) => s + parseVal(r.Value), 0)
-  )
+  ), [sortedYears, data])
   const totalDisposals = disposalsByYear.reduce((a, b) => a + b, 0)
 
   // Net Pending YoY

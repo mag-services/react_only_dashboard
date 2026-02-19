@@ -1,3 +1,4 @@
+import { memo } from 'react'
 import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -11,7 +12,7 @@ interface Props {
   getValue: (court: string, metric: string, year?: number) => number | null
 }
 
-export function FilingsDisposalsChart({ data, selectedYears, getValue }: Props) {
+export const FilingsDisposalsChart = memo(function FilingsDisposalsChart({ data, selectedYears, getValue }: Props) {
   const courts = sortCourtsByOrder([...new Set(data.filter((r) => r.Metric === 'Filings').map((r) => r.Court))])
   const sortedYears = [...selectedYears].sort((a, b) => a - b)
 
@@ -47,11 +48,11 @@ export function FilingsDisposalsChart({ data, selectedYears, getValue }: Props) 
       labels: { rotation: -45, style: { fontSize: '10px' } },
       crosshair: true,
     },
-    yAxis: { title: { text: '' }, gridLineDashStyle: 'Dot' },
+    yAxis: { title: { text: 'Cases' }, gridLineDashStyle: 'Dot' },
     plotOptions: { column: { borderWidth: 0 } },
     series,
     legend: { enabled: true },
-    tooltip: { shared: true },
+    tooltip: { shared: true, valueSuffix: ' cases' },
     credits: { enabled: false },
   }
 
@@ -70,4 +71,4 @@ export function FilingsDisposalsChart({ data, selectedYears, getValue }: Props) 
       </CardContent>
     </Card>
   )
-}
+})

@@ -1,3 +1,4 @@
+import { memo } from 'react'
 import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -15,7 +16,7 @@ const COLORS: Record<string, string> = {
   Maintenance: '#a78bfa', Other: '#93c5fd',
 }
 
-export function PendingByTypeChart({ data, selectedYears, getValue }: Props) {
+export const PendingByTypeChart = memo(function PendingByTypeChart({ data, selectedYears, getValue }: Props) {
   const pendingTypeMetrics = [...new Set(
     data.filter((r) => r.Metric.startsWith('Pending_') && !r.Metric.endsWith('_Pct')).map((r) => r.Metric)
   )]
@@ -60,11 +61,11 @@ export function PendingByTypeChart({ data, selectedYears, getValue }: Props) {
       labels: { rotation: -45, style: { fontSize: '10px' } },
       crosshair: true,
     },
-    yAxis: { gridLineDashStyle: 'Dot' },
+    yAxis: { title: { text: 'Cases' }, gridLineDashStyle: 'Dot' },
     plotOptions: { column: { borderWidth: 0, stacking: 'normal' } },
     series,
     legend: { enabled: true },
-    tooltip: { shared: true },
+    tooltip: { shared: true, valueSuffix: ' cases' },
     credits: { enabled: false },
   }
 
@@ -81,4 +82,4 @@ export function PendingByTypeChart({ data, selectedYears, getValue }: Props) {
       </CardContent>
     </Card>
   )
-}
+})
