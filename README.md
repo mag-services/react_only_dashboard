@@ -13,6 +13,7 @@ A static, client-side React dashboard for Vanuatu Judiciary annual reports stati
 - **Responsive layout** – Grid adapts to number of charts per page (2–3 columns)
 - **Mobile filter FAB** – Floating action button (bottom-right) opens a bottom sheet with courts and year filters on phones/tablets
 - **Performance** – Lazy-loading charts when 4+ years selected; memoization for smoother interaction
+- **PWA** – Installable on mobile and desktop; offline caching; auto-updates when new version is deployed
 
 ## Dashboard Sections
 
@@ -98,3 +99,11 @@ PDF links are configured in `public/annual-reports/reports.json` and shown in th
 ```
 
 For local PDFs, use `"file": "filename.pdf"` and place files in `public/annual-reports/`.
+
+## Progressive Web App (PWA)
+
+The dashboard is a PWA: users can add it to the home screen (mobile) or install it (desktop Chrome). Features:
+
+- **Offline caching** – App shell and data cached for offline use
+- **Auto-update** – New versions are fetched when the app regains focus
+- **Standalone display** – Installed app opens without browser chrome

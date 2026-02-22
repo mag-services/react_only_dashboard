@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/react_only_dashboard/sw.js', { scope: '/react_only_dashboard/' })})}

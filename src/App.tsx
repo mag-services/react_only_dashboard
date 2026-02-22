@@ -5,6 +5,7 @@ import { AppSidebar } from './components/layout/AppSidebar'
 import { AppSidebarSheet } from './components/layout/AppSidebarSheet'
 import { MobileFilterFAB } from './components/layout/MobileFilterFAB'
 import { HeroBanner } from './components/HeroBanner'
+import { InstallPWAButton } from './components/InstallPWAButton'
 import { AppFooter } from './components/layout/AppFooter'
 import { PageIndicators } from './components/PageIndicators'
 import { OverviewPage } from './pages/OverviewPage'
@@ -179,7 +180,10 @@ export default function App() {
                 </div>
                 <h1 className="text-2xl font-bold text-foreground">{SECTION_NAMES[activeTab]}</h1>
               </div>
-              <HeroBanner lastUpdated={lastUpdated} placement="icon" />
+              <div className="flex items-center gap-2">
+                <InstallPWAButton />
+                <HeroBanner lastUpdated={lastUpdated} placement="icon" />
+              </div>
             </div>
             <HeroBanner lastUpdated={lastUpdated} placement="banner" />
           </div>
