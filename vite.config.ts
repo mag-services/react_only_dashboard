@@ -5,17 +5,17 @@ import { VitePWA } from 'vite-plugin-pwa'
 import { defineConfig } from 'vite'
 
 export default defineConfig({
-  base: '/react_only_dashboard/', // Required for GitHub Pages project site
+  base: '/', // Use '/' for root deploy, or '/vanuatu-land-cover/' for project site
   plugins: [
     react(),
     tailwindcss(),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['favicon.png', 'data/*.csv', 'data/*.json', 'data/years.json', 'annual-reports/*.pdf', 'assets/*.geojson'],
+      includeAssets: ['favicon.png', 'data/*.json', 'assets/*.geojson'],
       manifest: {
-        name: 'Vanuatu Courts Dashboard',
-        short_name: 'Courts',
-        description: 'Key workload, backlog, timeliness and gender metrics from Vanuatu Judiciary annual reports',
+        name: 'Vanuatu Land Cover Accounts Dashboard',
+        short_name: 'Land Cover',
+        description: 'Land cover changes 2020–2023 across 6 provinces (Torba, Sanma, Penama, Malampa, Shefa, Tafea)',
         theme_color: '#422AFB',
         background_color: '#ffffff',
         display: 'standalone',
@@ -36,6 +36,14 @@ export default defineConfig({
             options: {
               cacheName: 'google-fonts',
               expiration: { maxEntries: 10, maxAgeSeconds: 60 * 60 * 24 * 365 },
+            },
+          },
+          {
+            urlPattern: /^https:\/\/geodata\.ucdavis\.edu\/.*\.json$/i,
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'geojson',
+              expiration: { maxEntries: 5, maxAgeSeconds: 60 * 60 * 24 * 30 },
             },
           },
           {

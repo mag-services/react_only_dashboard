@@ -1,32 +1,20 @@
-# Vanuatu Courts Dashboard
+# Vanuatu Land Cover Accounts Dashboard
 
-A static, client-side React dashboard for Vanuatu Judiciary annual reports statistics. Built with [Horizon UI](https://horizon-ui.com/)–inspired layout using **Shadcn UI**, **Tailwind CSS**, **Highcharts**, and **TanStack React Table**. No backend, server, or database.
+A static, client-side React dashboard for Vanuatu land cover statistics (2020–2023). Built with **Shadcn UI**, **Tailwind CSS**, **Highcharts**, **TanStack React Table**, and **react-leaflet**. No backend, server, or database.
 
 ## Features
 
-- **Court filter** – Multi-select dropdown (Court of Appeal, Supreme Court, Magistrates Court, Island Court)
-- **Year filter** – Slider to select year range (2018, 2020–2025)
-- **Page-specific KPI indicators** – Four cards per data page
-- **Court color consistency** – Each court has a distinct color across all charts (e.g. Supreme = dark blue, Magistrates = teal)
-- **Chart units** – Tooltips and axes show units (cases, days, %, etc.)
-- **Methodology** – PDF links, extraction notes, assumptions, and glossary in one section
-- **Responsive layout** – Grid adapts to number of charts per page (2–3 columns)
-- **Mobile filter FAB** – Floating action button (bottom-right) opens a bottom sheet with courts and year filters on phones/tablets
-- **Performance** – Lazy-loading charts when 4+ years selected; memoization for smoother interaction
-- **PWA** – Installable on mobile and desktop; offline caching; auto-updates when new version is deployed
-
-## Dashboard Sections
-
-| Page | Contents |
-|------|----------|
-| **Overview** | KPI cards with sparklines (pending, clearance, filings, disposals, DV trend, gender, etc.) |
-| **Pending Cases** | Pending & PDR table/chart, Pending by type, Pending age, Pending listed status, Reserved judgments |
-| **Workload** | Case workload by type, Location workload by province, DV filings |
-| **Performance** | Timeliness (Criminal/Civil days), Attendance rates, Productivity |
-| **Outcomes** | Case outcomes, Court of Appeal outcomes *(Island Court has no outcome data)* |
-| **Other Metrics** | Charge orders, Gender breakdown |
-| — | *separator* |
-| **Methodology** | PDFs used, extraction notes (LLM-based), methodology & assumptions, glossary |
+- **Province filter** – Multi-select (Torba, Sanma, Penama, Malampa, Shefa, Tafea, All)
+- **Land cover filter** – Multi-select (Agriculture, Dense Forest, Open Forest, Coconut plantations, Grassland, Barelands, Builtup Infrastructure, Mangrove, Water bodies, All)
+- **Year view** – Toggle 2020, 2023, or Change (2023−2020)
+- **KPI cards** – Total land area, overall change %, Dense Forest (2023) + change, Agriculture (2023) + change
+- **Physical Account chart** – Grouped bar (2020 vs 2023) with change spline line
+- **Proportion chart** – Donut showing land cover share by category
+- **Province stacked chart** – Land cover breakdown per province
+- **Interactive map** – Vanuatu provinces (GADM GeoJSON), zooms to selected province(s)
+- **Data table** – Sortable, paginated, CSV export
+- **Responsive layout** – Mobile-friendly grid
+- **PWA** – Installable; offline caching; auto-updates
 
 ## Setup
 
@@ -47,58 +35,26 @@ npm run build
 ```
 
 The build process:
-1. Runs `npm run generate-data` to create yearly CSVs from source files in `data/`
-2. Outputs to `public/data/*.csv` and `public/data/years.json`
-3. Bundles the app with Vite
+1. Runs `npm run generate-land-cover` to create `public/data/land_cover.json` from `data/Land cover dataset for dashboard.xlsx` (requires Python 3 + openpyxl)
+2. Bundles the app with Vite
 
-## Data Sources
+## Data Source
 
-Source CSVs in `data/`:
+- **Source:** `data/Land cover dataset for dashboard.xlsx`
+- **Output:** `public/data/land_cover.json`
+- **Schema:** `years`, `provinces`, `categories`, `kpis`, `proportions_2023`, `physical`, `by_province`
 
-| File | Description |
-|------|-------------|
-| `court_metrics.csv` | Filings, disposals, clearance, pending, PDR, timeliness, attendance, productivity, reserved judgments |
-| `gender_analysis.csv` | Male/Female % |
-| `case_outcomes.csv` | Guilty, Not guilty, Withdrawn, Dismissed, etc. |
-| `case_workload_by_type.csv` | Filings by case type (Total, Criminal, Civil, PI, Maintenance, Violence) |
-| `pending_by_type.csv` | Pending cases by type |
-| `pending_listed_status.csv` | With future listing, Under case mgmt, No future date |
-| `dv_filings.csv` | Domestic violence / protection order filings |
-| `location_workload.csv` | Filings by province |
-| `charge_orders.csv` | Charge orders by court |
-| `coa_outcomes.csv` | Court of Appeal outcomes (Civil/Criminal: Dismissed, Allowed, Withdrawn) |
+All areas are in **sq km**.
 
-## Data Format
+## Regenerating Data
 
-Yearly CSVs use:
-
-```
-Court,Year,Metric,Value,Unit
-Supreme Court,2024,Filings,879,
-Supreme Court,2024,ClearanceRate,93,%
-...
+```bash
+python3 -m venv .venv
+.venv/bin/pip install openpyxl
+node scripts/generate-land-cover-data.mjs
 ```
 
-## Adding a New Year (e.g. 2026)
-
-1. Add rows for the new year to the source CSVs in `data/` (see table above)
-2. Add a population estimate in `src/lib/population.ts` if needed
-3. Run `npm run generate-data` to regenerate `public/data/*.csv` and `public/data/years.json`
-4. Add the PDF to `public/annual-reports/` and update `public/annual-reports/reports.json` with a `file` entry
-5. Build with `npm run build`
-
-## Annual Reports (PDFs)
-
-PDF links are configured in `public/annual-reports/reports.json` and shown in the **Methodology** section. Reports point to Vanuatu Courts (courts.gov.vu):
-
-```json
-[
-  {"year": 2024, "title": "Annual Statistics 2024", "url": "https://courts.gov.vu/..."},
-  {"year": 2025, "title": "Annual Statistics 2025", "file": "2025-annual-statistics.pdf"}
-]
-```
-
-For local PDFs, use `"file": "filename.pdf"` and place files in `public/annual-reports/`.
+Or run `npm run generate-land-cover` (uses system Python if openpyxl is installed).
 
 ## Progressive Web App (PWA)
 
