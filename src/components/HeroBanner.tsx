@@ -12,7 +12,7 @@ const STORAGE_KEY = 'vanuatu-dashboard-hero-dismissed'
 const AUTO_HIDE_MS = 60_000 // 1 minute
 
 const MESSAGE =
-  'This dashboard visualises key workload, backlog, timeliness and gender metrics from Vanuatu Judiciary annual reports (2018–2025).'
+  'This dashboard visualises key workload, backlog, timeliness and gender metrics from Vanuatu Judiciary annual reports (2017–2025).'
 
 interface HeroBannerProps {
   lastUpdated?: string | null

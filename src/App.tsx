@@ -60,7 +60,7 @@ async function loadYearData(year: number): Promise<StatRow[]> {
 
 async function loadAvailableYears(): Promise<{ years: number[]; lastUpdated?: string }> {
   const res = await fetch(`${BASE}data/years.json`)
-  if (!res.ok) return { years: [2018, 2020, 2021, 2022, 2023, 2024, 2025] }
+  if (!res.ok) return { years: [2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025] }
   const json = (await res.json()) as { years?: number[]; lastUpdated?: string }
   return { years: json.years ?? [], lastUpdated: json.lastUpdated }
 }
@@ -230,7 +230,7 @@ export default function App() {
             <>
               {activeTab !== 0 && <PageIndicators data={filteredData} activeTab={activeTab} compareMode={compareMode} selectedYears={selectedYears} />}
               <div className="grid gap-6 xl:grid-cols-1">
-                {activeTab === 0 && <OverviewPage data={filteredData} selectedYears={selectedYears} compareMode={compareMode} getValue={getValue} />}
+                {activeTab === 0 && <OverviewPage data={filteredData} selectedYears={selectedYears} compareMode={compareMode} getValue={getValue} onNavigateToMethodology={() => setActiveTab(6)} />}
                 {activeTab === 1 && <PendingCasesPage data={filteredData} selectedYears={selectedYears} compareMode={compareMode} getValue={getValue} getRowsByMetric={getRowsByMetric} />}
                 {activeTab === 2 && <WorkloadPage data={filteredData} selectedYears={selectedYears} compareMode={compareMode} getValue={getValue} />}
                 {activeTab === 3 && <PerformancePage data={filteredData} selectedYears={selectedYears} compareMode={compareMode} getValue={getValue} />}

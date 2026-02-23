@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import { Clock, Scale, TrendingUp, FileText, Users, Layers, ArrowUp, ArrowDown } from 'lucide-react'
+import { Clock, Scale, TrendingUp, FileText, Users, Layers, ArrowUp, ArrowDown, Info } from 'lucide-react'
 import { Sparkline } from '../components/Sparkline'
 import { DVSummaryCard } from '../components/DVSummaryCard'
 import type { StatRow } from '../types'
@@ -15,6 +15,7 @@ interface Props {
   selectedYears: number[]
   compareMode?: boolean
   getValue: (court: string, metric: string, year?: number) => number | null
+  onNavigateToMethodology?: () => void
 }
 
 const CARD_COLORS = {
@@ -28,7 +29,7 @@ const CARD_COLORS = {
   netPending: '#0284c7',  // sky-600 (WCAG)
 } as const
 
-export function OverviewPage({ data, selectedYears, compareMode = false, getValue }: Props) {
+export function OverviewPage({ data, selectedYears, compareMode = false, getValue, onNavigateToMethodology }: Props) {
   const sortedYears = useMemo(() => [...selectedYears].sort((a, b) => a - b), [selectedYears])
   const [yearA, yearB] = compareMode && sortedYears.length >= 2 ? [sortedYears[0], sortedYears[1]] : [null, null]
   const courts = useMemo(() => [...new Set(data.map((r) => r.Court))], [data])
@@ -231,6 +232,17 @@ export function OverviewPage({ data, selectedYears, compareMode = false, getValu
         <p className="text-sm leading-relaxed text-muted-foreground">
           This dashboard summarizes key performance indicators from the Vanuatu Judiciary across the Court of Appeal, Supreme Court, Magistrates Court, and Island Court. Use the cards below to scan caseload (pending, filings, disposals), clearance and backlog trends, domestic violence protection orders, and gender representation. Select years and courts in the sidebar to filter the data. For detailed breakdowns, see the Pending Cases, Workload, Performance, Outcomes, and Other Metrics pages.
         </p>
+        {onNavigateToMethodology && (
+          <button
+            type="button"
+            onClick={onNavigateToMethodology}
+            className="mt-3 flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors"
+            title="Data notes and limitations"
+          >
+            <Info className="size-3.5 shrink-0" aria-hidden />
+            <span>See Methodology for data notes and limitations</span>
+          </button>
+        )}
       </div>
       {hasDVData && (
         <DVSummaryCard dvByYear={dvByYear} sortedYears={sortedYears} />

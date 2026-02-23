@@ -1,7 +1,7 @@
 Court,Year,CaseType,Pending,PctOfTotal
-Supreme Court,2025,Civil,535,56
-Supreme Court,2025,Criminal,340,36
-Supreme Court,2025,Other,75,8
+Supreme Court,2025,Civil,584,56
+Supreme Court,2025,Criminal,365,35
+Supreme Court,2025,Other,94,9
 Supreme Court,2024,Civil,550,55
 Supreme Court,2024,Criminal,350,35
 Supreme Court,2024,Other,100,10
@@ -14,16 +14,22 @@ Supreme Court,2022,Other,80,9
 Supreme Court,2021,Civil,490,54
 Supreme Court,2021,Criminal,320,36
 Supreme Court,2021,Other,90,10
-Supreme Court,2020,Civil,480,55
-Supreme Court,2020,Criminal,310,35
-Supreme Court,2020,Other,90,10
-Supreme Court,2018,Civil,470,55
-Supreme Court,2018,Criminal,300,35
-Supreme Court,2018,Other,90,10
-Magistrates Court,2025,Criminal,472,35
-Magistrates Court,2025,Violence,405,30
-Magistrates Court,2025,PI,270,20
-Magistrates Court,2025,Other,203,15
+Supreme Court,2020,Civil,403,50
+Supreme Court,2020,Criminal,282,35
+Supreme Court,2020,Other,121,15
+Supreme Court,2019,Civil,673,55
+Supreme Court,2019,Criminal,428,35
+Supreme Court,2019,Other,122,10
+Supreme Court,2018,Civil,663,55
+Supreme Court,2018,Criminal,422,35
+Supreme Court,2018,Other,121,10
+Supreme Court,2017,Civil,646,55
+Supreme Court,2017,Criminal,411,35
+Supreme Court,2017,Other,118,10
+Magistrates Court,2025,Criminal,538,35
+Magistrates Court,2025,Violence,461,30
+Magistrates Court,2025,PI,307,20
+Magistrates Court,2025,Other,230,15
 Magistrates Court,2024,Criminal,488,35
 Magistrates Court,2024,Violence,418,30
 Magistrates Court,2024,PI,279,20
@@ -40,17 +46,25 @@ Magistrates Court,2021,Criminal,438,35
 Magistrates Court,2021,Violence,375,30
 Magistrates Court,2021,PI,250,20
 Magistrates Court,2021,Other,187,15
-Magistrates Court,2020,Criminal,420,35
-Magistrates Court,2020,Violence,360,30
-Magistrates Court,2020,PI,240,20
-Magistrates Court,2020,Other,180,15
-Magistrates Court,2018,Criminal,403,35
-Magistrates Court,2018,Violence,345,30
-Magistrates Court,2018,PI,230,20
-Magistrates Court,2018,Other,172,15
-Island Court,2025,Criminal,245,36
-Island Court,2025,Maintenance,245,36
-Island Court,2025,Other,190,28
+Magistrates Court,2020,Criminal,309,35
+Magistrates Court,2020,Violence,265,30
+Magistrates Court,2020,PI,176,20
+Magistrates Court,2020,Other,132,15
+Magistrates Court,2019,Criminal,372,35
+Magistrates Court,2019,Violence,319,30
+Magistrates Court,2019,PI,212,20
+Magistrates Court,2019,Other,159,15
+Magistrates Court,2018,Criminal,308,35
+Magistrates Court,2018,Violence,264,30
+Magistrates Court,2018,PI,176,20
+Magistrates Court,2018,Other,132,15
+Magistrates Court,2017,Criminal,319,35
+Magistrates Court,2017,Violence,273,30
+Magistrates Court,2017,PI,182,20
+Magistrates Court,2017,Other,136,15
+Island Court,2025,Criminal,218,35
+Island Court,2025,Maintenance,218,35
+Island Court,2025,Other,186,30
 Island Court,2024,Criminal,250,36
 Island Court,2024,Maintenance,250,36
 Island Court,2024,Other,195,28
@@ -63,12 +77,18 @@ Island Court,2022,Other,176,28
 Island Court,2021,Criminal,219,36
 Island Court,2021,Maintenance,219,36
 Island Court,2021,Other,172,28
-Island Court,2020,Criminal,212,36
-Island Court,2020,Maintenance,212,36
-Island Court,2020,Other,166,28
-Island Court,2018,Criminal,199,35
-Island Court,2018,Maintenance,199,35
-Island Court,2018,Other,172,30
+Island Court,2020,Criminal,215,35
+Island Court,2020,Maintenance,215,35
+Island Court,2020,Other,184,30
+Island Court,2019,Criminal,235,35
+Island Court,2019,Maintenance,235,35
+Island Court,2019,Other,200,30
+Island Court,2018,Criminal,231,35
+Island Court,2018,Maintenance,231,35
+Island Court,2018,Other,198,30
+Island Court,2017,Criminal,210,35
+Island Court,2017,Maintenance,210,35
+Island Court,2017,Other,180,30
 Court of Appeal,2025,Civil,11,50
 Court of Appeal,2025,Criminal,11,50
 Court of Appeal,2024,Civil,12,50
@@ -81,5 +101,9 @@ Court of Appeal,2021,Civil,12,48
 Court of Appeal,2021,Criminal,13,52
 Court of Appeal,2020,Civil,13,48
 Court of Appeal,2020,Criminal,14,52
+Court of Appeal,2019,Civil,14,50
+Court of Appeal,2019,Criminal,14,50
 Court of Appeal,2018,Civil,14,50
 Court of Appeal,2018,Criminal,14,50
+Court of Appeal,2017,Civil,14,50
+Court of Appeal,2017,Criminal,14,50

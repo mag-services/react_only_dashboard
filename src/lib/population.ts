@@ -4,6 +4,7 @@
  * Other years: interpolated from census. Source: VBOS.
  */
 export const VANUATU_POPULATION: Record<number, number> = {
+  2017: 282_000,
   2018: 288_000,
   2019: 294_000,
   2020: 300_000, // Census year (VBOS)

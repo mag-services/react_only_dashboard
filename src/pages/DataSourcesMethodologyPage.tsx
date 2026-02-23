@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { FileText, Database, ExternalLink, Sparkles } from 'lucide-react'
+import { FileText, Database, ExternalLink, Sparkles, AlertCircle } from 'lucide-react'
 import { GLOSSARY } from '@/glossary'
 
 interface Report {
@@ -31,7 +31,7 @@ export function DataSourcesMethodologyPage({ embedded }: DataSourcesMethodologyP
         <a href="https://courts.gov.vu" target="_blank" rel="noopener noreferrer" className="text-[#422AFB] hover:underline">
           courts.gov.vu
         </a>
-        . For local PDFs, place files in <code className="rounded bg-muted px-1.5 py-0.5">public/annual-reports/</code> and use <code className="rounded bg-muted px-1.5 py-0.5">file</code> in <code className="rounded bg-muted px-1.5 py-0.5">reports.json</code>.
+        .
       </p>
 
       <div className="space-y-6">
@@ -44,7 +44,7 @@ export function DataSourcesMethodologyPage({ embedded }: DataSourcesMethodologyP
           </CardHeader>
           <CardContent>
             <ul className="space-y-2 text-sm text-muted-foreground">
-              <li><strong className="text-foreground">Feb 2026:</strong> Added 2025 Annual Statistics; improved DV trend visibility (dedicated card, YoY, rate per 100k); comparison mode (compare two years side-by-side); trend lines on key charts; WCAG contrast; NA values shown as greyed &quot;—&quot;.</li>
+              <li><strong className="text-foreground">Feb 2026:</strong> Rescanned 2017, 2018, 2020 Annual Reports; SC filings 2017→689, 2018→712 (from PDFs); MC 2020 PDR→0.7; 2020 corrected Annual Report applied; Data Notes &amp; Limitations section.</li>
             </ul>
           </CardContent>
         </Card>
@@ -100,6 +100,25 @@ export function DataSourcesMethodologyPage({ embedded }: DataSourcesMethodologyP
             <p className="text-sm text-muted-foreground">
               Assumptions: Court names are standardized (Court of Appeal, Supreme Court, Magistrates Court, Island Court). Island Court has no criminal/civil outcome data. Percentages and rates are as published unless otherwise noted.
             </p>
+          </CardContent>
+        </Card>
+
+        <Card className="border-amber-200/50 bg-amber-50/30 dark:border-amber-900/30 dark:bg-amber-950/20">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <AlertCircle className="size-5 text-amber-600 dark:text-amber-500" />
+              Data Notes &amp; Limitations
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-3 text-sm text-muted-foreground">
+            <p><strong className="text-foreground">Source alignment:</strong> Figures are drawn from Vanuatu Judiciary Annual Reports (PDFs) for 2017–2025. Where PDF values differed from earlier estimates, the dashboard has been aligned to the PDFs.</p>
+            <p><strong className="text-foreground">Years covered:</strong> 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025. 2017 and 2019 were previously missing and are now included.</p>
+            <p><strong className="text-foreground">Domestic violence / protection orders:</strong> DV filings and disposals are from the PDFs (e.g. 2025: 1,167 filings, 1,135 disposals; 2024: 1,226 / 1,113). Earlier years may have been estimated before verification.</p>
+            <p><strong className="text-foreground">Charge orders:</strong> The &quot;charge orders&quot; metric may not match &quot;criminal registered&quot; in the PDFs. If you notice mismatches, the definition in the source reports may differ and is under review.</p>
+            <p><strong className="text-foreground">Gender breakdown:</strong> The 2025 report states that gender breakdown will be published on the website. The dashboard uses prior-year patterns (about 63% male) for 2025 until official figures are available.</p>
+            <p><strong className="text-foreground">Island Court:</strong> Island Court has no outcome data, attendance rates, productivity, or reserved judgments in the PDFs. These appear as &quot;—&quot; in the dashboard.</p>
+            <p><strong className="text-foreground">Earlier reports (2017–2018, 2020):</strong> PDF values applied. 2017 and 2018 Supreme Court filings were rescanned from PDFs (SC 2017→689, 2018→712). 2020 uses the corrected Annual Report: SC 866 filings, 1,181 disposals, 136% clearance, 806 pending; MC 2,231/2,278, 102% clearance; IC 383/372.</p>
+            <p><strong className="text-foreground">2025 context:</strong> Port Vila Magistrates Court had reduced capacity in early 2025 due to the December 2024 earthquake. This may affect 2025 Magistrates figures.</p>
           </CardContent>
         </Card>
 
