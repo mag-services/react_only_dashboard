@@ -11,7 +11,7 @@ export default defineConfig({
     tailwindcss(),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['favicon.png', 'data/*.csv', 'data/years.json', 'annual-reports/*.pdf'],
+      includeAssets: ['favicon.png', 'data/*.csv', 'data/*.json', 'data/years.json', 'annual-reports/*.pdf', 'assets/*.geojson'],
       manifest: {
         name: 'Vanuatu Courts Dashboard',
         short_name: 'Courts',
@@ -39,7 +39,7 @@ export default defineConfig({
             },
           },
           {
-            urlPattern: /\/data\/.*\.(csv|json)$/,
+            urlPattern: /\/(data|assets)\/.*\.(csv|json|geojson)$/,
             handler: 'CacheFirst',
             options: {
               cacheName: 'dashboard-data',

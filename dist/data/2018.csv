@@ -1,44 +1,44 @@
 Court,Year,Metric,Value,Unit
-Court of Appeal,2018,Filings,74,
-Court of Appeal,2018,Disposals,72,
+Court of Appeal,2018,Filings,76,
+Court of Appeal,2018,Disposals,74,
 Court of Appeal,2018,ClearanceRate,97,%
 Court of Appeal,2018,Pending,28,
-Court of Appeal,2018,PDR,0.35,
+Court of Appeal,2018,PDR,0.38,
 Court of Appeal,2018,PendingAge,0,%
 Court of Appeal,2018,TimelinessCriminal,100,days
 Court of Appeal,2018,TimelinessCivil,150,days
 Court of Appeal,2018,ReservedJudgments,0,
-Supreme Court,2018,Filings,760,
-Supreme Court,2018,Disposals,750,
-Supreme Court,2018,ClearanceRate,99,%
-Supreme Court,2018,Pending,860,
-Supreme Court,2018,PDR,1.0,
+Supreme Court,2018,Filings,712,
+Supreme Court,2018,Disposals,717,
+Supreme Court,2018,ClearanceRate,93,%
+Supreme Court,2018,Pending,1206,
+Supreme Court,2018,PDR,1.7,
 Supreme Court,2018,PendingAge,20,%
-Supreme Court,2018,TimelinessCriminal,180,days
-Supreme Court,2018,TimelinessCivil,450,days
+Supreme Court,2018,TimelinessCriminal,433,days
+Supreme Court,2018,TimelinessCivil,640,days
 Supreme Court,2018,AttendanceCriminal,4,%
 Supreme Court,2018,AttendanceCivil,5.5,%
 Supreme Court,2018,AttendanceEnforcement,8,%
-Supreme Court,2018,Productivity,105,
-Supreme Court,2018,ReservedJudgments,58,
-Magistrates Court,2018,Filings,1800,
-Magistrates Court,2018,Disposals,1800,
-Magistrates Court,2018,ClearanceRate,100,%
-Magistrates Court,2018,Pending,1150,
-Magistrates Court,2018,PDR,0.64,
+Supreme Court,2018,Productivity,100,
+Supreme Court,2018,ReservedJudgments,40,
+Magistrates Court,2018,Filings,2094,
+Magistrates Court,2018,Disposals,2109,
+Magistrates Court,2018,ClearanceRate,101,%
+Magistrates Court,2018,Pending,880,
+Magistrates Court,2018,PDR,0.4,
 Magistrates Court,2018,PendingAge,19,%
-Magistrates Court,2018,TimelinessCriminal,125,days
+Magistrates Court,2018,TimelinessCriminal,265,days
 Magistrates Court,2018,TimelinessCivil,250,days
 Magistrates Court,2018,AttendanceCriminal,3.1,%
 Magistrates Court,2018,AttendanceCivil,5.7,%
 Magistrates Court,2018,AttendanceEnforcement,9,%
-Magistrates Court,2018,Productivity,275,
-Magistrates Court,2018,ReservedJudgments,19,
-Island Court,2018,Filings,450,
-Island Court,2018,Disposals,460,
-Island Court,2018,ClearanceRate,102,%
-Island Court,2018,Pending,570,
-Island Court,2018,PDR,1.5,
+Magistrates Court,2018,Productivity,240,
+Magistrates Court,2018,ReservedJudgments,9,
+Island Court,2018,Filings,395,
+Island Court,2018,Disposals,350,
+Island Court,2018,ClearanceRate,88,%
+Island Court,2018,Pending,660,
+Island Court,2018,PDR,1.9,
 Island Court,2018,PendingAge,52,%
 Island Court,2018,TimelinessCriminal,300,days
 Island Court,2018,TimelinessCivil,400,days
@@ -66,61 +66,61 @@ Magistrates Court,2018,PI_NotGuilty,0,%
 Magistrates Court,2018,PI_Withdrawn,20,%
 Magistrates Court,2018,PI_Committed,76,%
 Magistrates Court,2018,PI_Dismissed,4,%
-Supreme Court,2018,Workload_Total_Filings,760,
-Supreme Court,2018,Workload_Total_Disposals,750,
-Supreme Court,2018,Workload_Total_ClearanceRate,99,%
-Supreme Court,2018,Workload_Criminal_Filings,265,
+Supreme Court,2018,Workload_Total_Filings,712,
+Supreme Court,2018,Workload_Total_Disposals,717,
+Supreme Court,2018,Workload_Total_ClearanceRate,93,%
+Supreme Court,2018,Workload_Criminal_Filings,245,
 Supreme Court,2018,Workload_Criminal_Disposals,262,
 Supreme Court,2018,Workload_Criminal_ClearanceRate,99,%
-Magistrates Court,2018,Workload_Total_Filings,1800,
-Magistrates Court,2018,Workload_Total_Disposals,1800,
-Magistrates Court,2018,Workload_Total_ClearanceRate,100,%
-Magistrates Court,2018,Workload_Criminal_Filings,750,
-Magistrates Court,2018,Workload_Criminal_Disposals,745,
-Magistrates Court,2018,Workload_Criminal_ClearanceRate,99,%
-Magistrates Court,2018,Workload_PI_Filings,300,
-Magistrates Court,2018,Workload_PI_Disposals,294,
-Magistrates Court,2018,Workload_PI_ClearanceRate,98,%
-Magistrates Court,2018,Workload_Violence_Filings,750,
-Magistrates Court,2018,Workload_Violence_Disposals,761,
-Magistrates Court,2018,Workload_Violence_ClearanceRate,101,%
-Island Court,2018,Workload_Total_Filings,450,
-Island Court,2018,Workload_Total_Disposals,460,
-Island Court,2018,Workload_Total_ClearanceRate,102,%
-Island Court,2018,Workload_Criminal_Filings,225,
-Island Court,2018,Workload_Criminal_Disposals,220,
-Island Court,2018,Workload_Criminal_ClearanceRate,98,%
-Island Court,2018,Workload_Maintenance_Filings,225,
-Island Court,2018,Workload_Maintenance_Disposals,240,
-Island Court,2018,Workload_Maintenance_ClearanceRate,107,%
-Court of Appeal,2018,Workload_Total_Filings,74,
-Court of Appeal,2018,Workload_Total_Disposals,72,
+Magistrates Court,2018,Workload_Total_Filings,2094,
+Magistrates Court,2018,Workload_Total_Disposals,2109,
+Magistrates Court,2018,Workload_Total_ClearanceRate,101,%
+Magistrates Court,2018,Workload_Criminal_Filings,800,
+Magistrates Court,2018,Workload_Criminal_Disposals,785,
+Magistrates Court,2018,Workload_Criminal_ClearanceRate,98,%
+Magistrates Court,2018,Workload_PI_Filings,310,
+Magistrates Court,2018,Workload_PI_Disposals,320,
+Magistrates Court,2018,Workload_PI_ClearanceRate,103,%
+Magistrates Court,2018,Workload_Violence_Filings,984,
+Magistrates Court,2018,Workload_Violence_Disposals,1004,
+Magistrates Court,2018,Workload_Violence_ClearanceRate,102,%
+Island Court,2018,Workload_Total_Filings,395,
+Island Court,2018,Workload_Total_Disposals,350,
+Island Court,2018,Workload_Total_ClearanceRate,88,%
+Island Court,2018,Workload_Criminal_Filings,198,
+Island Court,2018,Workload_Criminal_Disposals,175,
+Island Court,2018,Workload_Criminal_ClearanceRate,88,%
+Island Court,2018,Workload_Maintenance_Filings,197,
+Island Court,2018,Workload_Maintenance_Disposals,175,
+Island Court,2018,Workload_Maintenance_ClearanceRate,89,%
+Court of Appeal,2018,Workload_Total_Filings,76,
+Court of Appeal,2018,Workload_Total_Disposals,74,
 Court of Appeal,2018,Workload_Total_ClearanceRate,97,%
-Court of Appeal,2018,Workload_Civil_Filings,41,
-Court of Appeal,2018,Workload_Civil_Disposals,39,
-Court of Appeal,2018,Workload_Civil_ClearanceRate,95,%
-Court of Appeal,2018,Workload_Criminal_Filings,33,
+Court of Appeal,2018,Workload_Civil_Filings,42,
+Court of Appeal,2018,Workload_Civil_Disposals,41,
+Court of Appeal,2018,Workload_Civil_ClearanceRate,98,%
+Court of Appeal,2018,Workload_Criminal_Filings,34,
 Court of Appeal,2018,Workload_Criminal_Disposals,33,
-Court of Appeal,2018,Workload_Criminal_ClearanceRate,100,%
-Supreme Court,2018,Pending_Civil,470,
+Court of Appeal,2018,Workload_Criminal_ClearanceRate,97,%
+Supreme Court,2018,Pending_Civil,663,
 Supreme Court,2018,Pending_Civil_Pct,55,%
-Supreme Court,2018,Pending_Criminal,300,
+Supreme Court,2018,Pending_Criminal,422,
 Supreme Court,2018,Pending_Criminal_Pct,35,%
-Supreme Court,2018,Pending_Other,90,
+Supreme Court,2018,Pending_Other,121,
 Supreme Court,2018,Pending_Other_Pct,10,%
-Magistrates Court,2018,Pending_Criminal,403,
+Magistrates Court,2018,Pending_Criminal,308,
 Magistrates Court,2018,Pending_Criminal_Pct,35,%
-Magistrates Court,2018,Pending_Violence,345,
+Magistrates Court,2018,Pending_Violence,264,
 Magistrates Court,2018,Pending_Violence_Pct,30,%
-Magistrates Court,2018,Pending_PI,230,
+Magistrates Court,2018,Pending_PI,176,
 Magistrates Court,2018,Pending_PI_Pct,20,%
-Magistrates Court,2018,Pending_Other,172,
+Magistrates Court,2018,Pending_Other,132,
 Magistrates Court,2018,Pending_Other_Pct,15,%
-Island Court,2018,Pending_Criminal,199,
+Island Court,2018,Pending_Criminal,231,
 Island Court,2018,Pending_Criminal_Pct,35,%
-Island Court,2018,Pending_Maintenance,199,
+Island Court,2018,Pending_Maintenance,231,
 Island Court,2018,Pending_Maintenance_Pct,35,%
-Island Court,2018,Pending_Other,172,
+Island Court,2018,Pending_Other,198,
 Island Court,2018,Pending_Other_Pct,30,%
 Court of Appeal,2018,Pending_Civil,14,
 Court of Appeal,2018,Pending_Civil_Pct,50,%
